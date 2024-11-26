@@ -32,7 +32,7 @@ namespace Puissance4_Rochat_Damien
             // constante pour definire le min de Ligne
             const byte MIN_LIGNE = 5;
             // constante pour definire le nombre de casse a changer
-            const int change = 4;
+            const int CHANGE = 4;
 
 
             // Booléin utile pour quitté la premier boucle 
@@ -217,15 +217,15 @@ namespace Puissance4_Rochat_Damien
 
                 if (key.Key == ConsoleKey.RightArrow)
                 {
-                    left += change;
+                    left += CHANGE;
                 }
                 else if (key.Key == ConsoleKey.LeftArrow)
                 {
-                    left -= change;
+                    left -= CHANGE;
                 }
                 else if (key.Key == ConsoleKey.Spacebar || key.Key == ConsoleKey.Enter)
                 {
-                    int col = (left - 10) / change;
+                    int col = (left - 10) / CHANGE;
 
                     for (int row = ligne - 1; row >= 0; row--)
                     {
@@ -234,7 +234,7 @@ namespace Puissance4_Rochat_Damien
                             tableau[row, col] = joueur;
 
                             int positionTop = 11 + (row * 2);
-                            int positionLeft = 10 + (col * change);
+                            int positionLeft = 10 + (col * CHANGE);
 
                             Console.SetCursorPosition(positionLeft, positionTop);
                             Console.Write('█');
@@ -261,14 +261,14 @@ namespace Puissance4_Rochat_Damien
                     ExitGame(input, ligne);
                 }
 
-                if (left >= colonne * change + 10)
+                if (left >= colonne * CHANGE + 10)
                 {
                     left = 10;
                 }
                 // Si on dépasse le début de la ligne, revenir à la fin de la ligne
                 if (left < 10)
                 {
-                    left = colonne * change + 10 - change;
+                    left = colonne * CHANGE + 10 - CHANGE;
                 }
                 color(tour);
                 // Placer le curseur à la nouvelle position et afficher le bloc
@@ -318,6 +318,7 @@ namespace Puissance4_Rochat_Damien
         /// <param name="top">permet de decaler vers le bas le joueur</param>
         static void ShowPlayer(int left, int top)
         {
+            //écris le █ au cordonée defini par les variable
             Console.SetCursorPosition(left, top);
             Console.Write("█");
             Console.CursorVisible = false;
@@ -329,32 +330,41 @@ namespace Puissance4_Rochat_Damien
         /// <param name="ligne">sert a connaitre le nombre de ligne</param>
         static void ExitGame(string input, int ligne)
         {
+            // écris un petit message pour recommencer
             Console.SetCursorPosition(8, (ligne * 3) + 5);
             Console.CursorVisible = false;
             Console.ForegroundColor = ConsoleColor.White;
-            Console.Write("Voulez-vous recommancez ");
+            Console.Write("Voulez-vous recommencer ");
             Console.ForegroundColor = ConsoleColor.Red;
             Console.Write("O/N :");
             input = Console.ReadLine();
+            // regarde si on mets un o
             if (input == "o" || input == "O")
             {
+                // relance le programme au main
                 Console.Clear();
                 Main(null);
-            }else if (input == "n" || input == "N")
+            }
+            // regarde si on mets un N
+            else if (input == "n" || input == "N")
             {
+                // écris un petit message pour quitter
                 Console.SetCursorPosition(8, (ligne * 3) + 6);
                 Console.ForegroundColor = ConsoleColor.White;
                 Console.Write("Voulez-vous quitté ");
                 Console.ForegroundColor = ConsoleColor.Red;
                 Console.Write("O/N :");
                 input = Console.ReadLine();
+                // regarde si on mets un O
                 if (input == "o" || input == "O")
                 {
+                    //quitte le programme apres 2s
                     Thread.Sleep(2000);
                     Environment.Exit(0);
                 }
                 else
                 {
+                    //clear les 2 ligne ou il peux y avoir du texte
                     Console.SetCursorPosition(8, (ligne * 3) + 5);
                     Console.Write("                                    ");
                     Console.SetCursorPosition(8, (ligne * 3) + 6);
@@ -445,7 +455,14 @@ namespace Puissance4_Rochat_Damien
 
             }
         }
-        public static bool CheckWin(int ligne, int colonne, int[,] tableau)
+        /// <summary>
+        /// check dans le tableau si il y a 4 nombre les meme l'un a coté des autre
+        /// </summary>
+        /// <param name="ligne">ligne entrer par le user</param>
+        /// <param name="colonne">colonne entrer par le user</param>
+        /// <param name="tableau">c'est le tableau ou on stock la ou il y a les pion des joueurs</param>
+        /// <returns></returns>
+        static bool CheckWin(int ligne, int colonne, int[,] tableau)
         {
             // Vérification des lignes (horizontalement)
             for (int i = 0; i < ligne; i++)
