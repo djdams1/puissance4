@@ -1,4 +1,5 @@
 ﻿
+
 // auteur : Damien Rochat
 // date   : 05.11.2024
 // lieu   : ETML VENNES
@@ -156,12 +157,12 @@ namespace Puissance4_Rochat_Damien
             Console.Clear();
 
             //  init le tableau
-            int[,] tableau = new int[line, column];
+            int[,] tables = new int[line, column];
 
             //  affiche le message en haut
             ShowTitle();
-            //  créé le tableau
-            CreatTable(column, line, tableau);
+            //  créé le tables
+            CreatTable(column, line, tables);
             //  mets la couleur juste pour le premier player
             Console.ForegroundColor = Color(turne);
             // affiche le jeton
@@ -230,9 +231,9 @@ namespace Puissance4_Rochat_Damien
                     for (int row = line - 1; row >= 0; row--)
                     {
                         // Vérifier si la case est vide (0 signifie case libre)
-                        if (tableau[row, col] == 0)
+                        if (tables[row, col] == 0)
                         {
-                            tableau[row, col] = player; // Placer la pièce du player dans la case
+                            tables[row, col] = player; // Placer la pièce du player dans la case
 
                             // Calculer la position de la pièce à afficher dans la console
                             positionTop = 11 + (row * 2); // Calcul de la position verticale
@@ -246,7 +247,7 @@ namespace Puissance4_Rochat_Damien
                             ShowPlayer(left, top); // Afficher la position actuelle du player
 
                             // Vérification si un player a gagné (4 pièces alignées)
-                            if (CheckWin(line, column, tableau))
+                            if (CheckWin(line, column, tables))
                             {
                                 // Si un player a gagné, afficher un message et mettre fin au jeu
                                 Console.SetCursorPosition(8, (line * 3) + 4);
@@ -385,7 +386,7 @@ namespace Puissance4_Rochat_Damien
         /// <param name="i">nombre d'iteration pour les columns</param>
         /// <param name="column">nombre de column</param>
         /// <param name="line">nombre de line</param>
-        static void CreatTable( int column, int line, int[,] tableau)
+        static void CreatTable( int column, int line, int[,] tables)
         {
             int x, i;
             Console.Write("\t╔");
@@ -462,9 +463,9 @@ namespace Puissance4_Rochat_Damien
         /// </summary>
         /// <param name="line">line entrer par le user</param>
         /// <param name="column">colonne entrer par le user</param>
-        /// <param name="tableau">c'est le tableau ou on stock la ou il y a les pion des players</param>
+        /// <param name="tables">c'est le tableau ou on stock la ou il y a les pion des players</param>
         /// <returns></returns>
-        static bool CheckWin(int line, int column, int[,] tableau)
+        static bool CheckWin(int line, int column, int[,] tables)
         {
             // Vérification des lines (horizontalement)
             // Parcours des lines du tableau pour vérifier une séquence de 4 éléments identiques horizontalement.
@@ -474,7 +475,7 @@ namespace Puissance4_Rochat_Damien
                 for (int j = 0; j < column - 3; j++)
                 {
                     // Vérification si les 4 éléments consécutifs sont identiques et non nuls
-                    if (tableau[i, j] != 0 && tableau[i, j] == tableau[i, j + 1] && tableau[i, j] == tableau[i, j + 2] && tableau[i, j] == tableau[i, j + 3])
+                    if (tables[i, j] != 0 && tables[i, j] == tables[i, j + 1] && tables[i, j] == tables[i, j + 2] && tables[i, j] == tables[i, j + 3])
                     {
                         return true; // Retourne true si une séquence gagnante est trouvée
                     }
@@ -488,7 +489,7 @@ namespace Puissance4_Rochat_Damien
                 for (int j = 0; j < column; j++)
                 {
                     // Vérification si les 4 éléments consécutifs sont identiques et non nuls
-                    if (tableau[i, j] != 0 && tableau[i, j] == tableau[i + 1, j] && tableau[i, j] == tableau[i + 2, j] && tableau[i, j] == tableau[i + 3, j])
+                    if (tables[i, j] != 0 && tables[i, j] == tables[i + 1, j] && tables[i, j] == tables[i + 2, j] && tables[i, j] == tables[i + 3, j])
                     {
                         return true; // Retourne true si une séquence gagnante est trouvée
                     }
@@ -502,7 +503,7 @@ namespace Puissance4_Rochat_Damien
                 for (int j = 0; j < column - 3; j++)
                 {
                     // Vérification si les 4 éléments consécutifs sur la diagonale sont identiques et non nuls
-                    if (tableau[i, j] != 0 && tableau[i, j] == tableau[i + 1, j + 1] && tableau[i, j] == tableau[i + 2, j + 2] && tableau[i, j] == tableau[i + 3, j + 3])
+                    if (tables[i, j] != 0 && tables[i, j] == tables[i + 1, j + 1] && tables[i, j] == tables[i + 2, j + 2] && tables[i, j] == tables[i + 3, j + 3])
                     {
                         return true; // Retourne true si une séquence gagnante est trouvée
                     }
@@ -516,7 +517,7 @@ namespace Puissance4_Rochat_Damien
                 for (int j = 0; j < column - 3; j++)
                 {
                     // Vérification si les 4 éléments consécutifs sur la diagonale sont identiques et non nuls
-                    if (tableau[i, j] != 0 && tableau[i, j] == tableau[i - 1, j + 1] && tableau[i, j] == tableau[i - 2, j + 2] && tableau[i, j] == tableau[i - 3, j + 3])
+                    if (tables[i, j] != 0 && tables[i, j] == tables[i - 1, j + 1] && tables[i, j] == tables[i - 2, j + 2] && tables[i, j] == tables[i - 3, j + 3])
                     {
                         return true; // Retourne true si une séquence gagnante est trouvée
                     }
