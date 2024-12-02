@@ -1,7 +1,7 @@
 ﻿/*ETML
  *Auteur : Killian Ganne
  *Date : 05.11.2024
- *Description : création d'un puissance 4 ou l'on peut choisir la taille du tableau
+ *Description : création d'un puissance 4 ou l'on peut choisir la taille du tables
  */
 using System;
 using System.Collections.Generic;
@@ -18,10 +18,10 @@ namespace puissance4_KillianGanne
 
         static void Main(string[] args)
         {
-            const int LINEMAX = 12;  //définie le max de ligne
-            const int LINEMINE = 6;  //définie le minimum de ligne
-            const int COLOMNMAX = 15;//définie le max de colonne
-            const int COLOMNMINE = 7;//définie le minimum de colonne
+            const int LINE_MAX = 12;  //définie le max de ligne
+            const int LINE_MINE = 6;  //définie le minimum de ligne
+            const int COLOMN_MAX = 15;//définie le max de colonne
+            const int COLOMN_MINE = 7;//définie le minimum de colonne
             const int CHANGE = 4;    // définie de combien on se déplace 
 
             bool ingame = true; //booléen pour savoir si on est en jeu 
@@ -65,14 +65,14 @@ namespace puissance4_KillianGanne
                     Console.Write("Votre valuer : ");
                     line = Console.ReadLine();
                 }
-                if (lineValue < LINEMINE || lineValue > LINEMAX) //si le nombre est trop grand ou trop petit reposer la question
+                if (lineValue < LINE_MINE || lineValue > LINE_MAX) //si le nombre est trop grand ou trop petit reposer la question
                 {
                     Console.WriteLine("\nIl ne rentre pas dans les normes\n");
                     Console.Write("Votre valuer : ");
                     line = Console.ReadLine();
                 }
             }
-            while (lineValue == 0 || lineValue < LINEMINE || lineValue > LINEMAX); //reposer la question tant que le nombre rentre pas dans les normes
+            while (lineValue == 0 || lineValue < LINE_MINE || lineValue > LINE_MAX); //reposer la question tant que le nombre rentre pas dans les normes
 
 
             //affiche le texte qui explique le nombre de colonne max et min et combien de colonne le joueur veut  
@@ -98,14 +98,14 @@ namespace puissance4_KillianGanne
                     Console.Write("Votre valuer : ");
                     column = Console.ReadLine();
                 }
-                if (columnValue < COLOMNMINE || columnValue > COLOMNMAX) //si le nombre est trop grand ou trop petit reposer la question
+                if (columnValue < COLOMN_MINE || columnValue > COLOMN_MAX) //si le nombre est trop grand ou trop petit reposer la question
                 {
                     Console.WriteLine("\nIl ne rentre pas dans les normes\n");
                     Console.Write("Votre valuer : ");
                     column = Console.ReadLine();
                 }
             }
-            while (columnValue == 0 || columnValue < COLOMNMINE || columnValue > COLOMNMAX); //reposer la question tant que le nombre rentre pas dans les normes
+            while (columnValue == 0 || columnValue < COLOMN_MINE || columnValue > COLOMN_MAX); //reposer la question tant que le nombre rentre pas dans les normes
 
 
             Console.Clear();
@@ -123,7 +123,7 @@ namespace puissance4_KillianGanne
             Showplayer(left, top);
 
             //  crée le tableau
-            int[,] tableau = new int[lineValue, columnValue];
+            int[,] tables = new int[lineValue, columnValue];
 
 
             //  boucle temps que le jeu est en cours
@@ -169,10 +169,10 @@ namespace puissance4_KillianGanne
                     for (int row = lineValue - 1; row >= 0; row--)
                     {
                         // Vérifier si la case est vide (0 signifie case libre)
-                        if (tableau[row, col] == 0)
+                        if (tables[row, col] == 0)
                         {
                             // Placer la pièce du player dans la case
-                            tableau[row, col] = player;
+                            tables[row, col] = player;
 
                             // Calculer la position de la pièce à afficher dans la console
                             int positionTop = 11 + (row * 2);  // Calcul de la position verticale
@@ -192,7 +192,7 @@ namespace puissance4_KillianGanne
 
                             // Vérification des 4 alignéss
                             // Vérification des 4 alignéss
-                            if (VerifierQuatreAlignes(lineValue, columnValue, tableau))
+                            if (VerifierQuatreAlignes(lineValue, columnValue, tables))
                             {
                                 // Si un player a gagné, afficher un message et mettre fin au jeu
                                 Console.SetCursorPosition(8, (lineValue * 3) + 2);
@@ -428,16 +428,16 @@ namespace puissance4_KillianGanne
         /// </summary>
         /// <param name="lineValue">nombre de ligne</param>
         /// <param name="columnValue">nombre de colonne</param>
-        /// <param name="tableau">le tableau à deux dimmension </param>
+        /// <param name="tables">le tableau à deux dimmension </param>
         /// <returns></returns>
-        static bool VerifierQuatreAlignes(int lineValue, int columnValue, int[,] tableau)
+        static bool VerifierQuatreAlignes(int lineValue, int columnValue, int[,] tables)
         {
             // Vérification des lignes (horizontalement)
             for (int i = 0; i < lineValue; i++)
             {
                 for (int j = 0; j < columnValue - 3; j++)
                 {
-                    if (tableau[i, j] != 0 && tableau[i, j] == tableau[i, j + 1] && tableau[i, j] == tableau[i, j + 2] && tableau[i, j] == tableau[i, j + 3])
+                    if (tables[i, j] != 0 && tables[i, j] == tables[i, j + 1] && tables[i, j] == tables[i, j + 2] && tables[i, j] == tables[i, j + 3])
                     {
                         return true;
                     }
@@ -449,7 +449,7 @@ namespace puissance4_KillianGanne
             {
                 for (int j = 0; j < columnValue; j++)
                 {
-                    if (tableau[i, j] != 0 && tableau[i, j] == tableau[i + 1, j] && tableau[i, j] == tableau[i + 2, j] && tableau[i, j] == tableau[i + 3, j])
+                    if (tables[i, j] != 0 && tables[i, j] == tables[i + 1, j] && tables[i, j] == tables[i + 2, j] && tables[i, j] == tables[i + 3, j])
                     {
                         return true;
                     }
@@ -461,7 +461,7 @@ namespace puissance4_KillianGanne
             {
                 for (int j = 0; j < columnValue - 3; j++)
                 {
-                    if (tableau[i, j] != 0 && tableau[i, j] == tableau[i + 1, j + 1] && tableau[i, j] == tableau[i + 2, j + 2] && tableau[i, j] == tableau[i + 3, j + 3])
+                    if (tables[i, j] != 0 && tables[i, j] == tables[i + 1, j + 1] && tables[i, j] == tables[i + 2, j + 2] && tables[i, j] == tables[i + 3, j + 3])
                     {
                         return true;
                     }
@@ -473,7 +473,7 @@ namespace puissance4_KillianGanne
             {
                 for (int j = 0; j < columnValue - 3; j++)
                 {
-                    if (tableau[i, j] != 0 && tableau[i, j] == tableau[i - 1, j + 1] && tableau[i, j] == tableau[i - 2, j + 2] && tableau[i, j] == tableau[i - 3, j + 3])
+                    if (tables[i, j] != 0 && tables[i, j] == tables[i - 1, j + 1] && tables[i, j] == tables[i - 2, j + 2] && tables[i, j] == tables[i - 3, j + 3])
                     {
                         return true;
                     }
