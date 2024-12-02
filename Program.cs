@@ -18,23 +18,24 @@ namespace puissance4_KillianGanne
 
         static void Main(string[] args)
         {
-            const int LINE_MAX = 12;  //définie le max de ligne
-            const int LINE_MINE = 6;  //définie le minimum de ligne
-            const int COLOMN_MAX = 15;//définie le max de colonne
+            const int LINE_MAX = 12;     //définie le max de ligne
+            const int LINE_MINE = 6;    //définie le minimum de ligne
+            const int COLOMN_MAX = 15; //définie le max de colonne
             const int COLOMN_MINE = 7;//définie le minimum de colonne
             const int CHANGE = 4;    // définie de combien on se déplace 
 
-            bool ingame = true; //booléen pour savoir si on est en jeu 
+            bool ingame = true;    //booléen pour savoir si on est en jeu 
 
-            int lineValue;   //stoque le nombre de ligne pour le tableau
-            int columnValue; //stoque le nombre de colonne pour le tableau
-            int left = 10;   //définie la position du joueur à gauche au début, augmantera par la suite
+            int lineValue;      //stoque le nombre de ligne pour le tableau
+            int columnValue;   //stoque le nombre de colonne pour le tableau
+            int left = 10;    //définie la position du joueur à gauche au début, augmantera par la suite
             int top = 7;     //définie la position du joueur depuis le haut du tableau au début, augmantera par la suite
-            int turne = 2;   //sert a savoir su cest le joueur rouge ou jaune
-            int player = 1;  //sert a mettre le bon mumero dans le tableau
+            int turne = 2;  //sert a savoir su cest le joueur rouge ou jaune
+            int player = 1;//sert a mettre le bon mumero dans le tableau
+            int hit;
 
-            string line = "";  //récupère le nombre de ligne
-            string column = "";//récupère le nombre de colomn
+            string line = "";    //récupère le nombre de ligne
+            string column = ""; //récupère le nombre de colomn
             string input = ""; //récupère se que le joueur écrit
 
 
@@ -192,14 +193,25 @@ namespace puissance4_KillianGanne
 
                             // Vérification des 4 alignéss
                             // Vérification des 4 alignéss
-                            if (VerifierQuatreAlignes(lineValue, columnValue, tables))
+                            if (CheckWin(lineValue, columnValue, tables, player))
                             {
-                                // Si un player a gagné, afficher un message et mettre fin au jeu
-                                Console.SetCursorPosition(8, (lineValue * 3) + 2);
-                                Console.ForegroundColor = ConsoleColor.Green;
-                                Console.WriteLine($"Le Joueur {player} a gagné !");
+                                hit = turne - 2;
 
-                                ExitGame(input, lineValue);
+                                // Si un player a gagné, afficher un message et mettre fin au jeu
+                                Console.SetCursorPosition(8, (lineValue * 3) + 5);
+                                Console.ForegroundColor = ConsoleColor.Green;
+                                Console.WriteLine($"Le Joueur {player} a gagné en {hit} coup!");
+
+                               
+                                Console.SetCursorPosition(8, (lineValue * 3) + 5);
+                                Console.ForegroundColor = ConsoleColor.White;
+                                Console.Write("Voulez-vous recommencer ");
+                                Console.ForegroundColor = ConsoleColor.Red;
+                                Console.Write("O/N : ");
+                                Console.CursorVisible = true;
+                                input = Console.ReadLine();
+
+                                RestartGame(input, lineValue);
 
                                 ingame = false; // Fin de la partie
                                 break;
@@ -210,7 +222,15 @@ namespace puissance4_KillianGanne
                 }
                 else if (key.Key == ConsoleKey.Escape)
                 {
-                    ExitGame(input, lineValue);
+                    Console.SetCursorPosition(8, (lineValue * 3) + 5);
+                    Console.ForegroundColor = ConsoleColor.White;
+                    Console.Write("Voulez-vous recommencer ");
+                    Console.ForegroundColor = ConsoleColor.Red;
+                    Console.Write("(O / N) : ");
+                    Console.CursorVisible = true;
+                    input = Console.ReadLine();
+
+                    RestartGame(input, lineValue);
                 }
 
                 // Si on dépasse la fin de la ligne, revenir au début de la ligne
@@ -229,60 +249,41 @@ namespace puissance4_KillianGanne
                 // Placer le curseur à la nouvelle position et afficher le bloc
                 Showplayer(left, top);
             }
-            
 
         }
         /// <summary>
-        ///  sert a quitter le jeu ou à recommencer
+        /// sert à recommencer le jeu ou pas 
         /// </summary>
-        /// <param name="input">caractère qu'on écrit </param>
-        /// <param name="lineValue">nombre de ligne</param>
-        static void ExitGame(string input, int lineValue)
+        /// <param name="input">ce que le joueur écrit</param>
+        /// <param name="lineValue">le nombre de ligne </param>
+        static void RestartGame(string input, int lineValue)
         {
-            // écris un petit message pour recommencer
-            Console.SetCursorPosition(8, (lineValue * 3) + 5);
-            Console.CursorVisible = false;
-            Console.ForegroundColor = ConsoleColor.White;
-            Console.Write("Voulez-vous recommencer ");
-            Console.ForegroundColor = ConsoleColor.Red;
-            Console.Write("O/N :");
-            input = Console.ReadLine();
-            // regarde si on mets un o
-            if (input == "o" || input == "O")
+            do
             {
-                // relance le programme au main
-                Console.Clear();
-                Console.ResetColor();
-                Main(null);
-            }
-            // regarde si on mets un N
-            else if (input == "n" || input == "N")
-            {
-                // écris un petit message pour quitter
-                Console.SetCursorPosition(8, (lineValue * 3) + 6);
-                Console.ForegroundColor = ConsoleColor.White;
-                Console.Write("Voulez-vous quitté ");
-                Console.ForegroundColor = ConsoleColor.Red;
-                Console.Write("O/N :");
-                input = Console.ReadLine();
-                // regarde si on mets un O
                 if (input == "o" || input == "O")
                 {
-                    //quitte le programme apres 2s
+                    // relance le programme au main
+                    Console.Clear();
+                    Console.ResetColor();
+                    Main(null);
+                }
+                else if (input == "n" || input == "N")
+                {
+                    Console.CursorVisible = false;
+                    Console.ForegroundColor = ConsoleColor.Red;
+                    Console.Write("\n\tLe jeu va s'arrêter");
                     Thread.Sleep(2000);
                     Environment.Exit(0);
                 }
                 else
                 {
-                    //clear les 2 ligne ou il peux y avoir du texte
-                    Console.SetCursorPosition(8, (lineValue * 3) + 5);
-                    Console.Write("                                    ");
-                    Console.SetCursorPosition(8, (lineValue * 3) + 6);
-                    Console.Write("                                    ");
+                    Console.ResetColor();
+                    Console.Write("\tmerci d'écrire (O / N)");
+                    Console.Write("\n\tO/N : ");
+                    input = Console.ReadLine();
                 }
-            }
+            } while (input != "o" || input != "O" || input != "N" || input != "n");
         }
-        
 
         /// <summary>
         /// définie la couleur selon le joueur
@@ -430,57 +431,66 @@ namespace puissance4_KillianGanne
         /// <param name="columnValue">nombre de colonne</param>
         /// <param name="tables">le tableau à deux dimmension </param>
         /// <returns></returns>
-        static bool VerifierQuatreAlignes(int lineValue, int columnValue, int[,] tables)
+        static bool CheckWin(int lineValue, int column, int[,] tables, int player)
         {
             // Vérification des lignes (horizontalement)
+            // Parcours des lignes du tableau pour vérifier une séquence de 4 éléments identiques horizontalement.
             for (int i = 0; i < lineValue; i++)
             {
-                for (int j = 0; j < columnValue - 3; j++)
+                // Parcours des colonnes, en s'assurant qu'il y a suffisamment de place pour une séquence de 4 éléments
+                for (int j = 0; j < column - 3; j++)
                 {
-                    if (tables[i, j] != 0 && tables[i, j] == tables[i, j + 1] && tables[i, j] == tables[i, j + 2] && tables[i, j] == tables[i, j + 3])
+                    // Vérification si les 4 éléments consécutifs sont identiques et appartiennent au player
+                    if (tables[i, j] == player && tables[i, j] == tables[i, j + 1] && tables[i, j] == tables[i, j + 2] && tables[i, j] == tables[i, j + 3])
                     {
-                        return true;
+                        return true; // Retourne true si une séquence gagnante est trouvée pour le player
                     }
                 }
             }
 
             // Vérification des colonnes (verticalement)
+            // Parcours des colonnes du tableau pour vérifier une séquence de 4 éléments identiques verticalement.
             for (int i = 0; i < lineValue - 3; i++)
             {
-                for (int j = 0; j < columnValue; j++)
+                for (int j = 0; j < column; j++)
                 {
-                    if (tables[i, j] != 0 && tables[i, j] == tables[i + 1, j] && tables[i, j] == tables[i + 2, j] && tables[i, j] == tables[i + 3, j])
+                    // Vérification si les 4 éléments consécutifs sont identiques et appartiennent au player
+                    if (tables[i, j] == player && tables[i, j] == tables[i + 1, j] && tables[i, j] == tables[i + 2, j] && tables[i, j] == tables[i + 3, j])
                     {
-                        return true;
+                        return true; // Retourne true si une séquence gagnante est trouvée pour le player
                     }
                 }
             }
 
             // Vérification des diagonales descendantes
+            // Parcours des cases pour vérifier une séquence de 4 éléments identiques sur une diagonale descendante
             for (int i = 0; i < lineValue - 3; i++)
             {
-                for (int j = 0; j < columnValue - 3; j++)
+                for (int j = 0; j < column - 3; j++)
                 {
-                    if (tables[i, j] != 0 && tables[i, j] == tables[i + 1, j + 1] && tables[i, j] == tables[i + 2, j + 2] && tables[i, j] == tables[i + 3, j + 3])
+                    // Vérification si les 4 éléments consécutifs sur la diagonale sont identiques et appartiennent au player
+                    if (tables[i, j] == player && tables[i, j] == tables[i + 1, j + 1] && tables[i, j] == tables[i + 2, j + 2] && tables[i, j] == tables[i + 3, j + 3])
                     {
-                        return true;
+                        return true; // Retourne true si une séquence gagnante est trouvée pour le player
                     }
                 }
             }
 
             // Vérification des diagonales montantes
+            // Parcours des cases pour vérifier une séquence de 4 éléments identiques sur une diagonale montante
             for (int i = 3; i < lineValue; i++)
             {
-                for (int j = 0; j < columnValue - 3; j++)
+                for (int j = 0; j < column - 3; j++)
                 {
-                    if (tables[i, j] != 0 && tables[i, j] == tables[i - 1, j + 1] && tables[i, j] == tables[i - 2, j + 2] && tables[i, j] == tables[i - 3, j + 3])
+                    // Vérification si les 4 éléments consécutifs sur la diagonale sont identiques et appartiennent au player
+                    if (tables[i, j] == player && tables[i, j] == tables[i - 1, j + 1] && tables[i, j] == tables[i - 2, j + 2] && tables[i, j] == tables[i - 3, j + 3])
                     {
-                        return true;
+                        return true; // Retourne true si une séquence gagnante est trouvée pour le player
                     }
                 }
             }
 
-            return false;
+            return false; // Retourne false si aucune séquence gagnante n'est trouvée
         }
     }
 }
