@@ -44,7 +44,6 @@ namespace Puissance4_Rochat_Damien
             string input = "";
 
 
-            
             //  sert a savoir su cest le joueur rouge ou jaune
             int turne = 2;
             //  sert a stoqué le nombre de ligne pour la construction
@@ -61,13 +60,11 @@ namespace Puissance4_Rochat_Damien
             int positionLeft;
             //  sert a calculer la position horizontal 
             int positionTop;
+            //  sert  a calculer la colonne en fonction de la possion actuelle
             int col;
-
-
+            
             //  sert a afficher le message en haut
             ShowTitle();
-
-
 
             //  sert a afficher le massage de consigne pour les lines
             Console.WriteLine("Merci d'entrer le nombre de lignes");
@@ -84,19 +81,22 @@ namespace Puissance4_Rochat_Damien
             {
                 Console.Write("Votre Valeur : ");
                 input = Console.ReadLine();
-                // && = et 
+                //  essaye de convertire input en INT et regarde si il est dans les norme defini par les constante
                 if (int.TryParse(input, out line) && line > MIN_LINE && line < MAX_LINE)
                 {
+                    //  si c'est bon sert de la boucle
                     isok = true;
                 }
                 else
-                {
+                {   //  si c'est pas bon determie si c'est une letre ou un chiffre
                     if (!int.TryParse(input, out line))
                     {
+                        //  si c'est une lettre afficher le message suvant
                         Console.WriteLine("\nEntrez un chiffre valide.");
                     }
                     else
                     {
+                        //  si c'est un nombre hors norme remarqué les norme
                         Console.Write("La valeur doit être plus grande que ");
                         Console.ForegroundColor = ConsoleColor.Magenta;
                         Console.Write(MIN_LINE);
@@ -129,18 +129,22 @@ namespace Puissance4_Rochat_Damien
             {
                 Console.Write("Votre Valeur : ");
                 input = Console.ReadLine();
+                //  essaye de convertire input en INT et regarde si il est dans les norme defini par les constante
                 if (int.TryParse(input, out column) && column > MIN_COLUMN && column < MAX_COLUMN)
                 {
+                    //  si c'est bon sert de la boucle
                     isok2 = true;
                 }
                 else
-                {
+                {   //  si c'est pas bon determie si c'est une letre ou un chiffre
                     if (!int.TryParse(input, out column))
                     {
+                        //  si c'est une lettre afficher le message suvant
                         Console.WriteLine("\nEntrez un chiffre valide.");
                     }
                     else
                     {
+                        //  si c'est un nombre hors norme remarqué les norme
                         Console.WriteLine("Merci d'entrer le nombre de colonne");
                         Console.Write("La valeur doit être plus grande que ");
                         Console.ForegroundColor = ConsoleColor.Magenta;
@@ -254,7 +258,20 @@ namespace Puissance4_Rochat_Damien
                                 Console.ForegroundColor = ConsoleColor.Green;
                                 Console.WriteLine($"Le player {player} a gagné !");
                                 ingame = false; // Fin de la partie
-                                ExitGame(input, line); // Quitter le jeu
+                                Console.ResetColor();
+                                Console.Write("\tVoulez-vous rejouez ? ");
+                                Console.ForegroundColor = ConsoleColor.Red;
+                                Console.Write("(");
+                                Console.ResetColor();
+                                Console.Write("O");
+                                Console.ForegroundColor = ConsoleColor.Red;
+                                Console.Write("/");
+                                Console.ResetColor();
+                                Console.Write("N");
+                                Console.ForegroundColor = ConsoleColor.Red;
+                                Console.WriteLine(")");
+                                Console.ResetColor();
+                                ExitGame();
                                 break; // Sortir de la boucle dès qu'un gagnant est trouvé
                             }
                             break; // Sortir de la boucle dès que la pièce est placée
@@ -264,9 +281,22 @@ namespace Puissance4_Rochat_Damien
                 // Si la touche Échap est pressée, quitter le jeu
                 else if (key.Key == ConsoleKey.Escape)
                 {
-                    ExitGame(input, line); // Quitter le jeu
+                    Console.SetCursorPosition(8, (line * 3) + 4);
+                    Console.ResetColor();
+                    Console.Write("\tVoulez-vous rejouez ? ");
+                    Console.ForegroundColor = ConsoleColor.Red;
+                    Console.Write("(");
+                    Console.ResetColor();
+                    Console.Write("O");
+                    Console.ForegroundColor = ConsoleColor.Red;
+                    Console.Write("/");
+                    Console.ResetColor();
+                    Console.Write("N");
+                    Console.ForegroundColor = ConsoleColor.Red;
+                    Console.WriteLine(")");
+                    Console.ResetColor();
+                    ExitGame();
                 }
-
                 // Si la position horizontale du player dépasse la largeur, réinitialiser à la position de départ (column 1)
                 if (left >= column * CHANGE + 10)
                 {
@@ -294,14 +324,15 @@ namespace Puissance4_Rochat_Damien
             ConsoleColor[] gradientColors = new ConsoleColor[] {
             ConsoleColor.Red, ConsoleColor.DarkRed, ConsoleColor.DarkMagenta,
             ConsoleColor.Magenta
-        };
+            };
             // Affichage du titre avec un dégradé
             string[] lines = new string[]
             {
-        "\t╔══════════════════════════════════════╗",
-        "\t║ Bienvenue dans le jeu du puissance 4 ║",
-        "\t║     Réalisé par Damien Rochat        ║",
-        "\t╚══════════════════════════════════════╝"
+            "\t╔══════════════════════════════════════╗",
+            "\t║ Bienvenue dans le jeu du puissance 4 ║",
+            "\t║     Réalisé par Damien Rochat        ║",
+            "\t║              04/11/24                ║",
+            "\t╚══════════════════════════════════════╝"
             };
             int lineIndex = 0;
             foreach (string line in lines)
@@ -335,49 +366,27 @@ namespace Puissance4_Rochat_Damien
         /// </summary>
         /// <param name="input">sert a recuperer ce que le user écris</param>
         /// <param name="line">sert a connaitre le nombre de ligne</param>
-        static void ExitGame(string input, int line)
+        static void ExitGame()
         {
-            // écris un petit message pour recommencer
-            Console.SetCursorPosition(8, (line * 3) + 5);
-            Console.CursorVisible = false;
-            Console.ForegroundColor = ConsoleColor.White;
-            Console.Write("Voulez-vous recommencer ");
-            Console.ForegroundColor = ConsoleColor.Red;
-            Console.Write("O/N :");
-            input = Console.ReadLine();
-            // regarde si on mets un o
-            if (input == "o" || input == "O")
+            while (true) 
             {
-                // relance le programme au main
-                Console.Clear();
-                Main(null);
-            }
-            // regarde si on mets un N
-            else if (input == "n" || input == "N")
-            {
-                // écris un petit message pour quitter
-                Console.SetCursorPosition(8, (line * 3) + 6);
-                Console.ForegroundColor = ConsoleColor.White;
-                Console.Write("Voulez-vous quitté ");
-                Console.ForegroundColor = ConsoleColor.Red;
-                Console.Write("O/N :");
-                input = Console.ReadLine();
-                // regarde si on mets un O
-                if (input == "o" || input == "O")
+                var key = Console.ReadKey(true);
+                if (key.Key == ConsoleKey.O)
                 {
-                    //quitte le programme apres 2s
-                    Thread.Sleep(2000);
+                    Console.Clear();
+                    Main(null);
+                }
+                else if (key.Key == ConsoleKey.N)
+                {
                     Environment.Exit(0);
                 }
                 else
                 {
-                    //clear les 2 line ou il peux y avoir du texte
-                    Console.SetCursorPosition(8, (line * 3) + 5);
-                    Console.Write("                                    ");
-                    Console.SetCursorPosition(8, (line * 3) + 6);
-                    Console.Write("                                    ");
+                    Console.ForegroundColor = ConsoleColor.Red;
+                    Console.WriteLine("\tEntrez une lettre corecte");
                 }
             }
+            
         }
         /// <summary>
         /// Permete de créé la table
