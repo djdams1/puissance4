@@ -247,7 +247,7 @@ namespace Puissance4_Rochat_Damien
                             ShowPlayer(left, top); // Afficher la position actuelle du player
 
                             // Vérification si un player a gagné (4 pièces alignées)
-                            if (CheckWin(line, column, tables))
+                            if (CheckWin(line, column, tables, player))
                             {
                                 // Si un player a gagné, afficher un message et mettre fin au jeu
                                 Console.SetCursorPosition(8, (line * 3) + 4);
@@ -465,19 +465,19 @@ namespace Puissance4_Rochat_Damien
         /// <param name="column">colonne entrer par le user</param>
         /// <param name="tables">c'est le tableau ou on stock la ou il y a les pion des players</param>
         /// <returns></returns>
-        static bool CheckWin(int line, int column, int[,] tables)
+        static bool CheckWin(int line, int column, int[,] tables, int player)
         {
-            // Vérification des lines (horizontalement)
-            // Parcours des lines du tableau pour vérifier une séquence de 4 éléments identiques horizontalement.
+            // Vérification des lignes (horizontalement)
+            // Parcours des lignes du tableau pour vérifier une séquence de 4 éléments identiques horizontalement.
             for (int i = 0; i < line; i++)
             {
                 // Parcours des colonnes, en s'assurant qu'il y a suffisamment de place pour une séquence de 4 éléments
                 for (int j = 0; j < column - 3; j++)
                 {
-                    // Vérification si les 4 éléments consécutifs sont identiques et non nuls
-                    if (tables[i, j] != 0 && tables[i, j] == tables[i, j + 1] && tables[i, j] == tables[i, j + 2] && tables[i, j] == tables[i, j + 3])
+                    // Vérification si les 4 éléments consécutifs sont identiques et appartiennent au player
+                    if (tables[i, j] == player && tables[i, j] == tables[i, j + 1] && tables[i, j] == tables[i, j + 2] && tables[i, j] == tables[i, j + 3])
                     {
-                        return true; // Retourne true si une séquence gagnante est trouvée
+                        return true; // Retourne true si une séquence gagnante est trouvée pour le player
                     }
                 }
             }
@@ -488,10 +488,10 @@ namespace Puissance4_Rochat_Damien
             {
                 for (int j = 0; j < column; j++)
                 {
-                    // Vérification si les 4 éléments consécutifs sont identiques et non nuls
-                    if (tables[i, j] != 0 && tables[i, j] == tables[i + 1, j] && tables[i, j] == tables[i + 2, j] && tables[i, j] == tables[i + 3, j])
+                    // Vérification si les 4 éléments consécutifs sont identiques et appartiennent au player
+                    if (tables[i, j] == player && tables[i, j] == tables[i + 1, j] && tables[i, j] == tables[i + 2, j] && tables[i, j] == tables[i + 3, j])
                     {
-                        return true; // Retourne true si une séquence gagnante est trouvée
+                        return true; // Retourne true si une séquence gagnante est trouvée pour le player
                     }
                 }
             }
@@ -502,10 +502,10 @@ namespace Puissance4_Rochat_Damien
             {
                 for (int j = 0; j < column - 3; j++)
                 {
-                    // Vérification si les 4 éléments consécutifs sur la diagonale sont identiques et non nuls
-                    if (tables[i, j] != 0 && tables[i, j] == tables[i + 1, j + 1] && tables[i, j] == tables[i + 2, j + 2] && tables[i, j] == tables[i + 3, j + 3])
+                    // Vérification si les 4 éléments consécutifs sur la diagonale sont identiques et appartiennent au player
+                    if (tables[i, j] == player && tables[i, j] == tables[i + 1, j + 1] && tables[i, j] == tables[i + 2, j + 2] && tables[i, j] == tables[i + 3, j + 3])
                     {
-                        return true; // Retourne true si une séquence gagnante est trouvée
+                        return true; // Retourne true si une séquence gagnante est trouvée pour le player
                     }
                 }
             }
@@ -516,14 +516,16 @@ namespace Puissance4_Rochat_Damien
             {
                 for (int j = 0; j < column - 3; j++)
                 {
-                    // Vérification si les 4 éléments consécutifs sur la diagonale sont identiques et non nuls
-                    if (tables[i, j] != 0 && tables[i, j] == tables[i - 1, j + 1] && tables[i, j] == tables[i - 2, j + 2] && tables[i, j] == tables[i - 3, j + 3])
+                    // Vérification si les 4 éléments consécutifs sur la diagonale sont identiques et appartiennent au player
+                    if (tables[i, j] == player && tables[i, j] == tables[i - 1, j + 1] && tables[i, j] == tables[i - 2, j + 2] && tables[i, j] == tables[i - 3, j + 3])
                     {
-                        return true; // Retourne true si une séquence gagnante est trouvée
+                        return true; // Retourne true si une séquence gagnante est trouvée pour le player
                     }
                 }
             }
+
             return false; // Retourne false si aucune séquence gagnante n'est trouvée
         }
+
     }
 }
