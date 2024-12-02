@@ -1,196 +1,137 @@
-﻿
-// auteur : Damien Rochat
-// date   : 05.11.2024
-// lieu   : ETML VENNES
-// description : c'est un puissance 4 ou les joueurs peuvent changer le nombre de casses
-
-
+﻿/*ETML
+ *Auteur : Killian Ganne
+ *Date : 05.11.2024
+ *Description : création d'un puissance 4 ou l'on peut choisir la taille du tableau
+ */
 using System;
-using System.Diagnostics;
-using System.Threading; 
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Threading;
 
-namespace Puissance4_Rochat_Damien
+namespace puissance4_KillianGanne
 {
     internal class Program
     {
+
+
         static void Main(string[] args)
         {
-            // constante pour definire le max de colonne
-            const byte MAX_COLUMN = 16;
-            // constante pour definire le min de colonne
-            const byte MIN_COLUMN = 6;
-            // constante pour definire le max de Ligne
-            const byte MAX_LINE = 13;
-            // constante pour definire le min de Ligne
-            const byte MIN_LINE = 5;
-            // constante pour definire le nombre de casse a changer
-            const int CHANGE = 4;
+            const int LINEMAX = 12;  //définie le max de ligne
+            const int LINEMINE = 6;  //définie le minimum de ligne
+            const int COLOMNMAX = 15;//définie le max de colonne
+            const int COLOMNMINE = 7;//définie le minimum de colonne
+            const int CHANGE = 4;    // définie de combien on se déplace 
+
+            bool ingame = true; //booléen pour savoir si on est en jeu 
+
+            int lineValue;   //stoque le nombre de ligne pour le tableau
+            int columnValue; //stoque le nombre de colonne pour le tableau
+            int left = 10;   //définie la position du joueur à gauche au début, augmantera par la suite
+            int top = 7;     //définie la position du joueur depuis le haut du tableau au début, augmantera par la suite
+            int turne = 2;   //sert a savoir su cest le joueur rouge ou jaune
+            int player = 1;  //sert a mettre le bon mumero dans le tableau
+
+            string line = "";  //récupère le nombre de ligne
+            string column = "";//récupère le nombre de colomn
+            string input = ""; //récupère se que le joueur écrit
 
 
-            // Booléin utile pour quitté la premier boucle 
-            bool isok = false;
-            // Booléin utile pour quitté la deuxième boucle 
-            bool isok2 = false;
-            // Booléin utile pour savoir si je suis en game
-            bool ingame = true;
+            Console.Title = "Puissance4"; //met le titre
 
+             ShowTitle(); //appelle la méthode pour mettre le titre de bienvenue
 
-            //  Récuperer ce que le joueur écris
-            string input = "";
-
-
-            
-            //  sert a savoir su cest le joueur rouge ou jaune
-            int turne = 2;
-            //  sert a stoqué le nombre de ligne pour la construction
-            int line = 0;
-            //  sert a stoqué le nombre de colonne pour la construction
-            int column = 0;
-            //  déclaration des varibale de possition pour la metode ShowPlayer et pour déplacer le joueur depuis la gauche
-            int left = 10;
-            //  déclaration des varibale de possition pour la metode ShowPlayer et pour déplacer le joueur depuis le haut
-            int top = 7;
-            //  sert a mettre le bon mumero dans le tableau
-            int player = 1;
-            //  sert a calculer la position vartical 
-            int positionLeft;
-            //  sert a calculer la position horizontal 
-            int positionTop;
-            int col;
-
-
-            //  sert a afficher le message en haut
-            ShowTitle();
-
-
-
-            //  sert a afficher le massage de consigne pour les lines
-            Console.WriteLine("Merci d'entrer le nombre de lignes");
-            Console.Write("La valeur doit être plus grande que ");
-            Console.ForegroundColor = ConsoleColor.Magenta;
-            Console.Write(MIN_LINE);
+            //affiche le texte qui explique le nombre de ligne max et min et combien de ligne le joueur veut
+            Console.Write("Merci d'entrer le nombre de ligne\nLa valueur doit être plus grande que ");
+            Console.ForegroundColor = ConsoleColor.Red;
+            Console.Write("5 ");
             Console.ResetColor();
-            Console.Write(" est plus petite que ");
-            Console.ForegroundColor = ConsoleColor.Magenta;
-            Console.WriteLine(MAX_LINE);
+            Console.Write("est plus petite que ");
+            Console.ForegroundColor = ConsoleColor.Red;
+            Console.WriteLine("13");
             Console.ResetColor();
-            //   chek si le nombre donner est dans les normes ou pas
-            while (!isok)
+            Console.Write("Votre valuer : ");
+
+            line = Console.ReadLine();
+
+
+            do
             {
-                Console.Write("Votre Valeur : ");
-                input = Console.ReadLine();
-                // && = et 
-                if (int.TryParse(input, out line) && line > MIN_LINE && line < MAX_LINE)
+                //si il ne peut pas convertir line en nombre dire que c'est pas dans les norme et reposer la question.
+                if (!int.TryParse(line, out lineValue)) //mettre line dasn lineValue
                 {
-                    isok = true;
+                    Console.WriteLine("\nCe n'est pas un nombre\n");
+                    Console.Write("Votre valuer : ");
+                    line = Console.ReadLine();
                 }
-                else
+                if (lineValue < LINEMINE || lineValue > LINEMAX) //si le nombre est trop grand ou trop petit reposer la question
                 {
-                    if (!int.TryParse(input, out line))
-                    {
-                        Console.WriteLine("\nEntrez un chiffre valide.");
-                    }
-                    else
-                    {
-                        Console.Write("La valeur doit être plus grande que ");
-                        Console.ForegroundColor = ConsoleColor.Magenta;
-                        Console.Write(MIN_LINE);
-                        Console.ResetColor();
-                        Console.Write(" est plus petite que ");
-                        Console.ForegroundColor = ConsoleColor.Magenta;
-                        Console.WriteLine(MAX_LINE);
-                        Console.ResetColor();
-                    }
-                    Console.ResetColor();
+                    Console.WriteLine("\nIl ne rentre pas dans les normes\n");
+                    Console.Write("Votre valuer : ");
+                    line = Console.ReadLine();
                 }
             }
-            Console.Clear();
-            //  sert a afficher le message en haut
-            ShowTitle();
+            while (lineValue == 0 || lineValue < LINEMINE || lineValue > LINEMAX); //reposer la question tant que le nombre rentre pas dans les normes
 
-            //  sert a afficher le massage de consigne pour les colonnes
-            Console.WriteLine("Merci d'entrer le nombre de colonne");
-            Console.Write("La valeur doit être plus grande que ");
-            Console.ForegroundColor = ConsoleColor.Magenta;
-            Console.Write(MIN_COLUMN);
-            Console.ResetColor();
-            Console.Write(" est plus petite que ");
-            Console.ForegroundColor = ConsoleColor.Magenta;
-            Console.WriteLine(MAX_COLUMN);
-            Console.ResetColor();
 
-            //   chek si le nombre donner est dans les normes ou pas
-            while (!isok2)
+            //affiche le texte qui explique le nombre de colonne max et min et combien de colonne le joueur veut  
+            Console.Write("\nMerci d'entrer le nombre de column\nLa valueur doit être plus grande que ");
+            Console.ForegroundColor = ConsoleColor.Red;
+            Console.Write("6 ");
+            Console.ResetColor();
+            Console.Write("est plus petite que ");
+            Console.ForegroundColor = ConsoleColor.Red;
+            Console.WriteLine("16");
+            Console.ResetColor();
+            Console.Write("Votre valuer : ");
+
+            column = Console.ReadLine();
+
+
+            do
             {
-                Console.Write("Votre Valeur : ");
-                input = Console.ReadLine();
-                if (int.TryParse(input, out column) && column > MIN_COLUMN && column < MAX_COLUMN)
+                //si il ne peut pas convertir colomn en nombre dire que c'est pas dans les norme et reposer la question.
+                if (!int.TryParse(column, out columnValue))
                 {
-                    isok2 = true;
+                    Console.WriteLine("\nCe n'est pas un nombre\n");
+                    Console.Write("Votre valuer : ");
+                    column = Console.ReadLine();
                 }
-                else
+                if (columnValue < COLOMNMINE || columnValue > COLOMNMAX) //si le nombre est trop grand ou trop petit reposer la question
                 {
-                    if (!int.TryParse(input, out column))
-                    {
-                        Console.WriteLine("\nEntrez un chiffre valide.");
-                    }
-                    else
-                    {
-                        Console.WriteLine("Merci d'entrer le nombre de colonne");
-                        Console.Write("La valeur doit être plus grande que ");
-                        Console.ForegroundColor = ConsoleColor.Magenta;
-                        Console.Write(MIN_COLUMN);
-                        Console.ResetColor();
-                        Console.Write(" est plus petite que ");
-                        Console.ForegroundColor = ConsoleColor.Magenta;
-                        Console.WriteLine(MAX_COLUMN);
-                        Console.ResetColor();
-                    }
-                    Console.ResetColor();
+                    Console.WriteLine("\nIl ne rentre pas dans les normes\n");
+                    Console.Write("Votre valuer : ");
+                    column = Console.ReadLine();
                 }
             }
+            while (columnValue == 0 || columnValue < COLOMNMINE || columnValue > COLOMNMAX); //reposer la question tant que le nombre rentre pas dans les normes
+
+
             Console.Clear();
 
-            //  init le tableau
-            int[,] tableau = new int[line, column];
-
-            //  affiche le message en haut
             ShowTitle();
-            //  créé le tableau
-            CreatTable(column, line, tableau);
-            //  mets la couleur juste pour le premier player
-            Console.ForegroundColor = Color(turne);
-            // affiche le jeton
-            ShowPlayer(left, top);
 
+            ShowTable(columnValue, lineValue);
 
-            //  affiche les regles
-            Console.SetCursorPosition((6 * column) + 5, 7);
-            Console.Write("Mode d'utilisation");
-            Console.SetCursorPosition((6 * column) + 5, 8);
-            Console.ForegroundColor = ConsoleColor.Magenta;
-            Console.Write("------------------");
-            Console.ResetColor();
-            Console.SetCursorPosition((6 * column) + 5, 9);
-            Console.Write("Déplacement \t Touches directionnelles");
-            Console.SetCursorPosition((6 * column) + 5, 10);
-            Console.Write("Tir \t  \t Touches space ou enter");
-            Console.SetCursorPosition((6 * column) + 5, 11);
-            Console.Write("Qutter \t Touches Escpae");
-            Console.SetCursorPosition((6 * column) + 5, 13);
-            Console.ForegroundColor = ConsoleColor.Magenta;
-            Console.Write("Joueur 1 : █\t");
-            Console.ForegroundColor = ConsoleColor.Yellow;
-            Console.Write(" Joueur 2 : █");
-            Console.ForegroundColor = ConsoleColor.Magenta;
+            ShowRules(columnValue);
+
+            //rend le cursor invisible
+            Console.CursorVisible = false;
+
+            // Placer le curseur à la nouvelle position et afficher le bloc
+            Showplayer(left, top);
+
+            //  crée le tableau
+            int[,] tableau = new int[lineValue, columnValue];
+
 
             //  boucle temps que le jeu est en cours
             while (ingame)
             {
+                // Lire la touche pressée
+                var key = Console.ReadKey(true);
+
                 //  si le nombre est paire c'est le player 1 qui joue sinon c'est le 2
                 if (turne % 2 == 0)
                 {
@@ -200,144 +141,106 @@ namespace Puissance4_Rochat_Damien
                 {
                     player = 2;
                 }
-                //  on mets dans key la touche que le player appuie
-                var key = Console.ReadKey();
 
-                //  mets la couleur juste pour le player
-                Console.ForegroundColor = Color(turne);
-                //  mets le curseur dans dans la casse en fenction de left et top
+                //mets la couleur pour le joueur, soit rouge pour le joueur 1 et jaune pour le joueur 2
+                Console.ForegroundColor=Color(turne);
+
+                // Effacer le bloc à la position actuelle
                 Console.SetCursorPosition(left, top);
-                //  efface l'encien jeton
-                Console.Write(" ");
+                Console.Write(" ");  // Effacer le précédent bloc
 
-                // Si la touche flèche droite est pressée, déplacer le player vers la droite
+                // Vérifier si la touche fléchée droite a été pressée
                 if (key.Key == ConsoleKey.RightArrow)
                 {
-                    left += CHANGE; // Déplacer le player de 4 unités vers la droite
+                    left += CHANGE;  // Déplacement vers la droite
                 }
-                // Si la touche flèche gauche est pressée, déplacer le player vers la gauche
+                // Vérifier si la touche fléchée gauche a été pressée
                 else if (key.Key == ConsoleKey.LeftArrow)
                 {
-                    left -= CHANGE; // Déplacer le player de 4 unités vers la gauche
+                    left -= CHANGE;  // Déplacement vers la gauche
                 }
                 // Si la touche espace ou entrée est pressée, placer un jeton dans la colonne sélectionnée
                 else if (key.Key == ConsoleKey.Spacebar || key.Key == ConsoleKey.Enter)
                 {
                     // Calculer la colonne à partir de la position horizontale actuelle
-                    col = (left - 10) / CHANGE;
+                    int col = (left - 10) / CHANGE;
 
                     // Parcourir les lignes de la dernière vers la première pour placer la pièce
-                    for (int row = line - 1; row >= 0; row--)
+                    for (int row = lineValue - 1; row >= 0; row--)
                     {
                         // Vérifier si la case est vide (0 signifie case libre)
                         if (tableau[row, col] == 0)
                         {
-                            tableau[row, col] = player; // Placer la pièce du player dans la case
+                            // Placer la pièce du player dans la case
+                            tableau[row, col] = player;
 
                             // Calculer la position de la pièce à afficher dans la console
-                            positionTop = 11 + (row * 2); // Calcul de la position verticale
-                            positionLeft = 10 + (col * CHANGE); // Calcul de la position horizontale
+                            int positionTop = 11 + (row * 2);  // Calcul de la position verticale
+                            int positionLeft = 10 + (col * CHANGE);  // Calcul de la position horizontale
 
                             // Déplacer le curseur à la position calculée et afficher la pièce
                             Console.SetCursorPosition(positionLeft, positionTop);
                             Console.Write('█');
-                            turne++; // Passer au tour suivant
-                            Console.ForegroundColor = Color(turne);// Mettre à jour la couleur du player
-                            ShowPlayer(left, top); // Afficher la position actuelle du player
 
-                            // Vérification si un player a gagné (4 pièces alignées)
-                            if (CheckWin(line, column, tableau))
+
+                            // Passer au tour suivant
+                            turne++;
+
+
+                            Console.ForegroundColor = Color(turne);// Mettre à jour la couleur du player
+                            Showplayer(left, top);  // Afficher la position actuelle du player
+
+                            // Vérification des 4 alignéss
+                            // Vérification des 4 alignéss
+                            if (VerifierQuatreAlignes(lineValue, columnValue, tableau))
                             {
                                 // Si un player a gagné, afficher un message et mettre fin au jeu
-                                Console.SetCursorPosition(8, (line * 3) + 4);
+                                Console.SetCursorPosition(8, (lineValue * 3) + 2);
                                 Console.ForegroundColor = ConsoleColor.Green;
-                                Console.WriteLine($"Le player {player} a gagné !");
+                                Console.WriteLine($"Le Joueur {player} a gagné !");
+
+                                ExitGame(input, lineValue);
+
                                 ingame = false; // Fin de la partie
-                                ExitGame(input, line); // Quitter le jeu
-                                break; // Sortir de la boucle dès qu'un gagnant est trouvé
+                                break;
                             }
-                            break; // Sortir de la boucle dès que la pièce est placée
+                            break;
                         }
                     }
                 }
-                // Si la touche Échap est pressée, quitter le jeu
                 else if (key.Key == ConsoleKey.Escape)
                 {
-                    ExitGame(input, line); // Quitter le jeu
+                    ExitGame(input, lineValue);
                 }
 
-                // Si la position horizontale du player dépasse la largeur, réinitialiser à la position de départ (column 1)
-                if (left >= column * CHANGE + 10)
+                // Si on dépasse la fin de la ligne, revenir au début de la ligne
+                if (left >= columnValue * CHANGE + 10)  // Si on dépasse la fin de la ligne
                 {
-                    left = 10; // Réinitialiser la position à la première colonne
+                    left = 10;  // Revenir au début de la ligne
                 }
-                // Si la position horizontale est inférieure à la première colonne, réinitialiser à la dernière colonne
-                if (left < 10)
+
+                // Si on dépasse le début de la ligne, revenir à la fin de la ligne
+                if (left < 10)  // Si on dépasse le début de la ligne (avant la position de départ)
                 {
-                    left = column * CHANGE + 10 - CHANGE; // Réinitialiser à la dernière colonne
+                    left = columnValue * CHANGE + 10 - CHANGE;  // Revenir à la fin de la ligne
                 }
-                Console.ForegroundColor = Color(turne); ; // Mettre à jour la couleur du player
-                // Afficher le player à la nouvelle position après chaque mouvement
-                ShowPlayer(left, top);
+
+                Console.ForegroundColor = Color(turne);
+                // Placer le curseur à la nouvelle position et afficher le bloc
+                Showplayer(left, top);
             }
-            Console.Read(); // Attendre que l'utilisateur appuie sur une touche avant de fermer le programme
-        }
-            /// <summary>
-            /// modele pour mettre partout
-            /// </summary>
-        static void ShowTitle()
-        {
-            Console.Title = "Puissance 4";
-            Console.SetCursorPosition(0, 0);
-            // Les couleurs de dégradé (par exemple, du rouge au violet)
-            ConsoleColor[] gradientColors = new ConsoleColor[] {
-            ConsoleColor.Red, ConsoleColor.DarkRed, ConsoleColor.DarkMagenta,
-            ConsoleColor.Magenta
-        };
-            // Affichage du titre avec un dégradé
-            string[] lines = new string[]
-            {
-        "\t╔══════════════════════════════════════╗",
-        "\t║ Bienvenue dans le jeu du puissance 4 ║",
-        "\t║     Réalisé par Damien Rochat        ║",
-        "\t╚══════════════════════════════════════╝"
-            };
-            int lineIndex = 0;
-            foreach (string line in lines)
-            {
-                Console.SetCursorPosition(0, lineIndex);
-                // Applique un dégradé en fonction de l'index de la ligne
-                for (int i = 0; i < line.Length; i++)
-                {
-                    Console.ForegroundColor = gradientColors[(i * gradientColors.Length) / line.Length];
-                    Console.Write(line[i]);
-                }
-                Console.ResetColor();
-                lineIndex++;
-            }
-            Console.SetCursorPosition(0, 6);
+            
+
         }
         /// <summary>
-        /// Sert a afficher le player dans la case
+        ///  sert a quitter le jeu ou à recommencer
         /// </summary>
-        /// <param name="left">permet de decaler a gauche le player</param>
-        /// <param name="top">permet de decaler vers le bas le player</param>
-        static void ShowPlayer(int left, int top)
-        {
-            //écris le █ au cordonée defini par les variable
-            Console.SetCursorPosition(left, top);
-            Console.Write("█");
-            Console.CursorVisible = false;
-        }
-        /// <summary>
-        /// sert a quitter le jeu
-        /// </summary>
-        /// <param name="input">sert a recuperer ce que le user écris</param>
-        /// <param name="line">sert a connaitre le nombre de ligne</param>
-        static void ExitGame(string input, int line)
+        /// <param name="input">caractère qu'on écrit </param>
+        /// <param name="lineValue">nombre de ligne</param>
+        static void ExitGame(string input, int lineValue)
         {
             // écris un petit message pour recommencer
-            Console.SetCursorPosition(8, (line * 3) + 5);
+            Console.SetCursorPosition(8, (lineValue * 3) + 5);
             Console.CursorVisible = false;
             Console.ForegroundColor = ConsoleColor.White;
             Console.Write("Voulez-vous recommencer ");
@@ -349,13 +252,14 @@ namespace Puissance4_Rochat_Damien
             {
                 // relance le programme au main
                 Console.Clear();
+                Console.ResetColor();
                 Main(null);
             }
             // regarde si on mets un N
             else if (input == "n" || input == "N")
             {
                 // écris un petit message pour quitter
-                Console.SetCursorPosition(8, (line * 3) + 6);
+                Console.SetCursorPosition(8, (lineValue * 3) + 6);
                 Console.ForegroundColor = ConsoleColor.White;
                 Console.Write("Voulez-vous quitté ");
                 Console.ForegroundColor = ConsoleColor.Red;
@@ -370,85 +274,21 @@ namespace Puissance4_Rochat_Damien
                 }
                 else
                 {
-                    //clear les 2 line ou il peux y avoir du texte
-                    Console.SetCursorPosition(8, (line * 3) + 5);
+                    //clear les 2 ligne ou il peux y avoir du texte
+                    Console.SetCursorPosition(8, (lineValue * 3) + 5);
                     Console.Write("                                    ");
-                    Console.SetCursorPosition(8, (line * 3) + 6);
+                    Console.SetCursorPosition(8, (lineValue * 3) + 6);
                     Console.Write("                                    ");
                 }
             }
         }
+        
+
         /// <summary>
-        /// Permete de créé la table
+        /// définie la couleur selon le joueur
         /// </summary>
-        /// <param name="x">nombre d'iteration pour les lines</param>
-        /// <param name="i">nombre d'iteration pour les columns</param>
-        /// <param name="column">nombre de column</param>
-        /// <param name="line">nombre de line</param>
-        static void CreatTable( int column, int line, int[,] tableau)
-        {
-            int x, i;
-            Console.Write("\t╔");
-            for (i = 1; i < column; i++)
-            {
-                Console.Write("═══╦");
-            }
-            Console.WriteLine("═══╗");
-            Console.Write("\t║");
-            for (i = 1; i < column; i++)
-            {
-                Console.Write("   ║");
-            }
-            Console.WriteLine("   ║");
-
-            Console.Write("\t╚");
-            for (i = 1; i < column; i++)
-            {
-                Console.Write("═══╩");
-            }
-            Console.WriteLine("═══╝");
-
-
-            Console.WriteLine("");
-            Console.Write("\t╔");
-
-            for (i = 1; i < column; i++)
-            {
-                Console.Write("═══╦");
-            }
-            Console.WriteLine("═══╗");
-
-            for (x = 0; x < line - 1; x++)
-            {
-                Console.Write("\t║   ");
-                for (i = 0; i < column; i++)
-                {
-                    Console.Write("║   ");
-                }
-                Console.Write("\n\t╠═══╬");
-                for (i = 2; i < column; i++)
-                {
-                    Console.Write("═══╬");
-                }
-                Console.WriteLine("═══╣");
-            }
-            Console.Write("\t║");
-            for (i = 1; i < column; i++)
-            {
-                Console.Write("   ║");
-            }
-            Console.WriteLine("   ║");
-            Console.Write("\t╚");
-            for (i = 1; i < column; i++)
-            {
-                Console.Write("═══╩");
-            }
-            Console.WriteLine("═══╝");
-        }
-        /// <summary>
-        /// sert a changer la couleur en fonction du player
-        /// </summary>
-        /// <param name="turne">sert a savoir si cest le turne 1 ou 2</param>
+        /// <param name="turne">le nombre de tour du jeu</param>
+        /// <returns></returns>
         static ConsoleColor Color(int turne)
         {
             ConsoleColor colorBase = ConsoleColor.White;
@@ -457,72 +297,190 @@ namespace Puissance4_Rochat_Damien
 
             return colorBase;
         }
+
+
         /// <summary>
-        /// check dans le tableau si il y a 4 nombre les meme l'un a coté des autre
+        /// affiche le titre
         /// </summary>
-        /// <param name="line">line entrer par le user</param>
-        /// <param name="column">colonne entrer par le user</param>
-        /// <param name="tableau">c'est le tableau ou on stock la ou il y a les pion des players</param>
-        /// <returns></returns>
-        static bool CheckWin(int line, int column, int[,] tableau)
+        static void ShowTitle()
         {
-            // Vérification des lines (horizontalement)
-            // Parcours des lines du tableau pour vérifier une séquence de 4 éléments identiques horizontalement.
-            for (int i = 0; i < line; i++)
+            Console.WriteLine("\t╔══════════════════════════════════════════════════════╗");
+            Console.WriteLine("\t║          Bienvenue dans le jeu Puissance 4           ║");
+            Console.WriteLine("\t║              Réalisé par Killian Ganne               ║");
+            Console.WriteLine("\t║                     04.11.2024                       ║");
+            Console.WriteLine("\t╚══════════════════════════════════════════════════════╝\n");
+        }
+
+
+        /// <summary>
+        /// affiche le joueur
+        /// </summary>
+        /// <param name="left">position à gauche</param>
+        /// <param name="top">position en haut</param>
+        static void Showplayer(int left, int top)
+        {
+            Console.SetCursorPosition(left, top);
+            Console.Write("█");
+        }
+
+        /// <summary>
+        /// affiche le tableau
+        /// </summary>
+        /// <param name="columnValue">le nombre de colonne</param>
+        /// <param name="lineValue">le nombre de ligne</param>
+        static void ShowTable(int columnValue, int lineValue)
+        {
+            int i = 0;
+            int x = 0;
+
+            Console.Write("\t╔═══╦");
+            for (i = 2; i < columnValue; i++)
             {
-                // Parcours des colonnes, en s'assurant qu'il y a suffisamment de place pour une séquence de 4 éléments
-                for (int j = 0; j < column - 3; j++)
+                Console.Write("═══╦");
+            }
+            Console.WriteLine("═══╗");
+
+
+            Console.Write("\t║   ");
+            for (i = 0; i < columnValue; i++)
+            {
+                Console.Write("║   ");
+            }
+
+            Console.Write("\n\t╚═══╩");
+            for (i = 2; i < columnValue; i++)
+            {
+                Console.Write("═══╩");
+            }
+            Console.WriteLine("═══╝\n");
+
+
+
+            Console.Write("\t╔═══╦");
+            for (i = 2; i < columnValue; i++)
+            {
+                Console.Write("═══╦");
+            }
+            Console.WriteLine("═══╗");
+
+
+            for (x = 1; x < lineValue; x++)
+            {
+
+                Console.Write("\t║   ");
+                for (i = 0; i < columnValue; i++)
                 {
-                    // Vérification si les 4 éléments consécutifs sont identiques et non nuls
+                    Console.Write("║   ");
+                }
+
+                Console.Write("\n\t╠═══╬");
+                for (i = 2; i < columnValue; i++)
+                {
+                    Console.Write("═══╬");
+                }
+                Console.WriteLine("═══╣");
+            }
+
+            Console.Write("\t║   ");
+            for (i = 0; i < columnValue; i++)
+            {
+                Console.Write("║   ");
+            }
+
+
+            Console.Write("\n\t╚═══╩");
+            for (i = 2; i < columnValue; i++)
+            {
+                Console.Write("═══╩");
+            }
+            Console.WriteLine("═══╝");
+        }
+
+        /// <summary>
+        /// affiche le paragraphe de règle à côté du tableau
+        /// </summary>
+        /// <param name="columnValue">le nombre de colonne</param>
+        static void ShowRules(int columnValue)
+        {
+
+            Console.SetCursorPosition((6 * columnValue) + 5, 7);
+            Console.Write("Mode d'utilisation");
+            Console.SetCursorPosition((6 * columnValue) + 5, 8);
+            Console.ForegroundColor = ConsoleColor.Red;
+            Console.Write("------------------");
+            Console.ResetColor();
+            Console.SetCursorPosition((6 * columnValue) + 5, 9);
+            Console.Write("Déplacement \t Touches directionnelles");
+            Console.SetCursorPosition((6 * columnValue) + 5, 10);
+            Console.Write("Tir \t  \t Touches space ou enter");
+            Console.SetCursorPosition((6 * columnValue) + 5, 11);
+            Console.Write("Qutter \t Touches Escpae");
+            Console.SetCursorPosition((6 * columnValue) + 5, 13);
+            Console.ForegroundColor = ConsoleColor.Red;
+            Console.Write("Joueur 1 : █\t");
+            Console.ForegroundColor = ConsoleColor.Yellow;
+            Console.Write(" Joueur 2 : █");
+            Console.ForegroundColor = ConsoleColor.Red;
+        }
+
+        /// <summary>
+        /// vérifie si un joueur gagne
+        /// </summary>
+        /// <param name="lineValue">nombre de ligne</param>
+        /// <param name="columnValue">nombre de colonne</param>
+        /// <param name="tableau">le tableau à deux dimmension </param>
+        /// <returns></returns>
+        static bool VerifierQuatreAlignes(int lineValue, int columnValue, int[,] tableau)
+        {
+            // Vérification des lignes (horizontalement)
+            for (int i = 0; i < lineValue; i++)
+            {
+                for (int j = 0; j < columnValue - 3; j++)
+                {
                     if (tableau[i, j] != 0 && tableau[i, j] == tableau[i, j + 1] && tableau[i, j] == tableau[i, j + 2] && tableau[i, j] == tableau[i, j + 3])
                     {
-                        return true; // Retourne true si une séquence gagnante est trouvée
+                        return true;
                     }
                 }
             }
 
             // Vérification des colonnes (verticalement)
-            // Parcours des colonnes du tableau pour vérifier une séquence de 4 éléments identiques verticalement.
-            for (int i = 0; i < line - 3; i++)
+            for (int i = 0; i < lineValue - 3; i++)
             {
-                for (int j = 0; j < column; j++)
+                for (int j = 0; j < columnValue; j++)
                 {
-                    // Vérification si les 4 éléments consécutifs sont identiques et non nuls
                     if (tableau[i, j] != 0 && tableau[i, j] == tableau[i + 1, j] && tableau[i, j] == tableau[i + 2, j] && tableau[i, j] == tableau[i + 3, j])
                     {
-                        return true; // Retourne true si une séquence gagnante est trouvée
+                        return true;
                     }
                 }
             }
 
             // Vérification des diagonales descendantes
-            // Parcours des cases pour vérifier une séquence de 4 éléments identiques sur une diagonale descendante
-            for (int i = 0; i < line - 3; i++)
+            for (int i = 0; i < lineValue - 3; i++)
             {
-                for (int j = 0; j < column - 3; j++)
+                for (int j = 0; j < columnValue - 3; j++)
                 {
-                    // Vérification si les 4 éléments consécutifs sur la diagonale sont identiques et non nuls
                     if (tableau[i, j] != 0 && tableau[i, j] == tableau[i + 1, j + 1] && tableau[i, j] == tableau[i + 2, j + 2] && tableau[i, j] == tableau[i + 3, j + 3])
                     {
-                        return true; // Retourne true si une séquence gagnante est trouvée
+                        return true;
                     }
                 }
             }
 
             // Vérification des diagonales montantes
-            // Parcours des cases pour vérifier une séquence de 4 éléments identiques sur une diagonale montante
-            for (int i = 3; i < line; i++)
+            for (int i = 3; i < lineValue; i++)
             {
-                for (int j = 0; j < column - 3; j++)
+                for (int j = 0; j < columnValue - 3; j++)
                 {
-                    // Vérification si les 4 éléments consécutifs sur la diagonale sont identiques et non nuls
                     if (tableau[i, j] != 0 && tableau[i, j] == tableau[i - 1, j + 1] && tableau[i, j] == tableau[i - 2, j + 2] && tableau[i, j] == tableau[i - 3, j + 3])
                     {
-                        return true; // Retourne true si une séquence gagnante est trouvée
+                        return true;
                     }
                 }
             }
-            return false; // Retourne false si aucune séquence gagnante n'est trouvée
+
+            return false;
         }
     }
 }
