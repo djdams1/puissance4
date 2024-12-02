@@ -20,13 +20,13 @@ namespace Puissance4_Rochat_Damien
         static void Main(string[] args)
         {
             // constante pour definire le max de colonne
-            const byte MAX_COLONNE = 16;
+            const byte MAX_COLUMN = 16;
             // constante pour definire le min de colonne
-            const byte MIN_COLONE = 6;
+            const byte MIN_COLUMN = 6;
             // constante pour definire le max de Ligne
-            const byte MAX_LIGNE = 13;
+            const byte MAX_LINE = 13;
             // constante pour definire le min de Ligne
-            const byte MIN_LIGNE = 5;
+            const byte MIN_LINE = 5;
             // constante pour definire le nombre de casse a changer
             const int CHANGE = 4;
 
@@ -43,16 +43,13 @@ namespace Puissance4_Rochat_Damien
             string input = "";
 
 
-            //  sert dans la creation du tableau (== a colonne)
-            int i = 1;
-            //  sert dans la creation du tableau (== a ligne)
-            int x = 1;
+            
             //  sert a savoir su cest le joueur rouge ou jaune
             int turne = 2;
             //  sert a stoqué le nombre de ligne pour la construction
-            int ligne = 0;
+            int line = 0;
             //  sert a stoqué le nombre de colonne pour la construction
-            int colonne = 0;
+            int column = 0;
             //  déclaration des varibale de possition pour la metode ShowPlayer et pour déplacer le joueur depuis la gauche
             int left = 10;
             //  déclaration des varibale de possition pour la metode ShowPlayer et pour déplacer le joueur depuis le haut
@@ -71,15 +68,15 @@ namespace Puissance4_Rochat_Damien
 
 
 
-            //  sert a afficher le massage de consigne pour les lignes
+            //  sert a afficher le massage de consigne pour les lines
             Console.WriteLine("Merci d'entrer le nombre de lignes");
             Console.Write("La valeur doit être plus grande que ");
             Console.ForegroundColor = ConsoleColor.Magenta;
-            Console.Write(MIN_LIGNE);
+            Console.Write(MIN_LINE);
             Console.ResetColor();
             Console.Write(" est plus petite que ");
             Console.ForegroundColor = ConsoleColor.Magenta;
-            Console.WriteLine(MAX_LIGNE);
+            Console.WriteLine(MAX_LINE);
             Console.ResetColor();
             //   chek si le nombre donner est dans les normes ou pas
             while (!isok)
@@ -87,13 +84,13 @@ namespace Puissance4_Rochat_Damien
                 Console.Write("Votre Valeur : ");
                 input = Console.ReadLine();
                 // && = et 
-                if (int.TryParse(input, out ligne) && ligne > MIN_LIGNE && ligne < MAX_LIGNE)
+                if (int.TryParse(input, out line) && line > MIN_LINE && line < MAX_LINE)
                 {
                     isok = true;
                 }
                 else
                 {
-                    if (!int.TryParse(input, out ligne))
+                    if (!int.TryParse(input, out line))
                     {
                         Console.WriteLine("\nEntrez un chiffre valide.");
                     }
@@ -101,11 +98,11 @@ namespace Puissance4_Rochat_Damien
                     {
                         Console.Write("La valeur doit être plus grande que ");
                         Console.ForegroundColor = ConsoleColor.Magenta;
-                        Console.Write(MIN_LIGNE);
+                        Console.Write(MIN_LINE);
                         Console.ResetColor();
                         Console.Write(" est plus petite que ");
                         Console.ForegroundColor = ConsoleColor.Magenta;
-                        Console.WriteLine(MAX_LIGNE);
+                        Console.WriteLine(MAX_LINE);
                         Console.ResetColor();
                     }
                     Console.ResetColor();
@@ -119,11 +116,11 @@ namespace Puissance4_Rochat_Damien
             Console.WriteLine("Merci d'entrer le nombre de colonne");
             Console.Write("La valeur doit être plus grande que ");
             Console.ForegroundColor = ConsoleColor.Magenta;
-            Console.Write(MIN_COLONE);
+            Console.Write(MIN_COLUMN);
             Console.ResetColor();
             Console.Write(" est plus petite que ");
             Console.ForegroundColor = ConsoleColor.Magenta;
-            Console.WriteLine(MAX_COLONNE);
+            Console.WriteLine(MAX_COLUMN);
             Console.ResetColor();
 
             //   chek si le nombre donner est dans les normes ou pas
@@ -131,13 +128,13 @@ namespace Puissance4_Rochat_Damien
             {
                 Console.Write("Votre Valeur : ");
                 input = Console.ReadLine();
-                if (int.TryParse(input, out colonne) && colonne > MIN_COLONE && colonne < MAX_COLONNE)
+                if (int.TryParse(input, out column) && column > MIN_COLUMN && column < MAX_COLUMN)
                 {
                     isok2 = true;
                 }
                 else
                 {
-                    if (!int.TryParse(input, out colonne))
+                    if (!int.TryParse(input, out column))
                     {
                         Console.WriteLine("\nEntrez un chiffre valide.");
                     }
@@ -146,11 +143,11 @@ namespace Puissance4_Rochat_Damien
                         Console.WriteLine("Merci d'entrer le nombre de colonne");
                         Console.Write("La valeur doit être plus grande que ");
                         Console.ForegroundColor = ConsoleColor.Magenta;
-                        Console.Write(MIN_COLONE);
+                        Console.Write(MIN_COLUMN);
                         Console.ResetColor();
                         Console.Write(" est plus petite que ");
                         Console.ForegroundColor = ConsoleColor.Magenta;
-                        Console.WriteLine(MAX_COLONNE);
+                        Console.WriteLine(MAX_COLUMN);
                         Console.ResetColor();
                     }
                     Console.ResetColor();
@@ -159,12 +156,12 @@ namespace Puissance4_Rochat_Damien
             Console.Clear();
 
             //  init le tableau
-            int[,] tableau = new int[ligne, colonne];
+            int[,] tableau = new int[line, column];
 
             //  affiche le message en haut
             ShowTitle();
             //  créé le tableau
-            CreatTable(x, i, colonne, ligne, tableau);
+            CreatTable(column, line, tableau);
             //  mets la couleur juste pour le premier player
             Console.ForegroundColor = Color(turne);
             // affiche le jeton
@@ -172,19 +169,19 @@ namespace Puissance4_Rochat_Damien
 
 
             //  affiche les regles
-            Console.SetCursorPosition((6 * colonne) + 5, 7);
+            Console.SetCursorPosition((6 * column) + 5, 7);
             Console.Write("Mode d'utilisation");
-            Console.SetCursorPosition((6 * colonne) + 5, 8);
+            Console.SetCursorPosition((6 * column) + 5, 8);
             Console.ForegroundColor = ConsoleColor.Magenta;
             Console.Write("------------------");
             Console.ResetColor();
-            Console.SetCursorPosition((6 * colonne) + 5, 9);
+            Console.SetCursorPosition((6 * column) + 5, 9);
             Console.Write("Déplacement \t Touches directionnelles");
-            Console.SetCursorPosition((6 * colonne) + 5, 10);
+            Console.SetCursorPosition((6 * column) + 5, 10);
             Console.Write("Tir \t  \t Touches space ou enter");
-            Console.SetCursorPosition((6 * colonne) + 5, 11);
+            Console.SetCursorPosition((6 * column) + 5, 11);
             Console.Write("Qutter \t Touches Escpae");
-            Console.SetCursorPosition((6 * colonne) + 5, 13);
+            Console.SetCursorPosition((6 * column) + 5, 13);
             Console.ForegroundColor = ConsoleColor.Magenta;
             Console.Write("Joueur 1 : █\t");
             Console.ForegroundColor = ConsoleColor.Yellow;
@@ -230,7 +227,7 @@ namespace Puissance4_Rochat_Damien
                     col = (left - 10) / CHANGE;
 
                     // Parcourir les lignes de la dernière vers la première pour placer la pièce
-                    for (int row = ligne - 1; row >= 0; row--)
+                    for (int row = line - 1; row >= 0; row--)
                     {
                         // Vérifier si la case est vide (0 signifie case libre)
                         if (tableau[row, col] == 0)
@@ -249,14 +246,14 @@ namespace Puissance4_Rochat_Damien
                             ShowPlayer(left, top); // Afficher la position actuelle du player
 
                             // Vérification si un player a gagné (4 pièces alignées)
-                            if (CheckWin(ligne, colonne, tableau))
+                            if (CheckWin(line, column, tableau))
                             {
                                 // Si un player a gagné, afficher un message et mettre fin au jeu
-                                Console.SetCursorPosition(8, (ligne * 3) + 4);
+                                Console.SetCursorPosition(8, (line * 3) + 4);
                                 Console.ForegroundColor = ConsoleColor.Green;
                                 Console.WriteLine($"Le player {player} a gagné !");
                                 ingame = false; // Fin de la partie
-                                ExitGame(input, ligne); // Quitter le jeu
+                                ExitGame(input, line); // Quitter le jeu
                                 break; // Sortir de la boucle dès qu'un gagnant est trouvé
                             }
                             break; // Sortir de la boucle dès que la pièce est placée
@@ -266,18 +263,18 @@ namespace Puissance4_Rochat_Damien
                 // Si la touche Échap est pressée, quitter le jeu
                 else if (key.Key == ConsoleKey.Escape)
                 {
-                    ExitGame(input, ligne); // Quitter le jeu
+                    ExitGame(input, line); // Quitter le jeu
                 }
 
-                // Si la position horizontale du player dépasse la largeur, réinitialiser à la position de départ (colonne 1)
-                if (left >= colonne * CHANGE + 10)
+                // Si la position horizontale du player dépasse la largeur, réinitialiser à la position de départ (column 1)
+                if (left >= column * CHANGE + 10)
                 {
                     left = 10; // Réinitialiser la position à la première colonne
                 }
                 // Si la position horizontale est inférieure à la première colonne, réinitialiser à la dernière colonne
                 if (left < 10)
                 {
-                    left = colonne * CHANGE + 10 - CHANGE; // Réinitialiser à la dernière colonne
+                    left = column * CHANGE + 10 - CHANGE; // Réinitialiser à la dernière colonne
                 }
                 Console.ForegroundColor = Color(turne); ; // Mettre à jour la couleur du player
                 // Afficher le player à la nouvelle position après chaque mouvement
@@ -336,11 +333,11 @@ namespace Puissance4_Rochat_Damien
         /// sert a quitter le jeu
         /// </summary>
         /// <param name="input">sert a recuperer ce que le user écris</param>
-        /// <param name="ligne">sert a connaitre le nombre de ligne</param>
-        static void ExitGame(string input, int ligne)
+        /// <param name="line">sert a connaitre le nombre de ligne</param>
+        static void ExitGame(string input, int line)
         {
             // écris un petit message pour recommencer
-            Console.SetCursorPosition(8, (ligne * 3) + 5);
+            Console.SetCursorPosition(8, (line * 3) + 5);
             Console.CursorVisible = false;
             Console.ForegroundColor = ConsoleColor.White;
             Console.Write("Voulez-vous recommencer ");
@@ -358,7 +355,7 @@ namespace Puissance4_Rochat_Damien
             else if (input == "n" || input == "N")
             {
                 // écris un petit message pour quitter
-                Console.SetCursorPosition(8, (ligne * 3) + 6);
+                Console.SetCursorPosition(8, (line * 3) + 6);
                 Console.ForegroundColor = ConsoleColor.White;
                 Console.Write("Voulez-vous quitté ");
                 Console.ForegroundColor = ConsoleColor.Red;
@@ -373,10 +370,10 @@ namespace Puissance4_Rochat_Damien
                 }
                 else
                 {
-                    //clear les 2 ligne ou il peux y avoir du texte
-                    Console.SetCursorPosition(8, (ligne * 3) + 5);
+                    //clear les 2 line ou il peux y avoir du texte
+                    Console.SetCursorPosition(8, (line * 3) + 5);
                     Console.Write("                                    ");
-                    Console.SetCursorPosition(8, (ligne * 3) + 6);
+                    Console.SetCursorPosition(8, (line * 3) + 6);
                     Console.Write("                                    ");
                 }
             }
@@ -384,27 +381,28 @@ namespace Puissance4_Rochat_Damien
         /// <summary>
         /// Permete de créé la table
         /// </summary>
-        /// <param name="x">nombre d'iteration pour les lignes</param>
-        /// <param name="i">nombre d'iteration pour les colonnes</param>
-        /// <param name="colonne">nombre de colonne</param>
-        /// <param name="ligne">nombre de ligne</param>
-        static void CreatTable(int x, int i, int colonne, int ligne, int[,] tableau)
+        /// <param name="x">nombre d'iteration pour les lines</param>
+        /// <param name="i">nombre d'iteration pour les columns</param>
+        /// <param name="column">nombre de column</param>
+        /// <param name="line">nombre de line</param>
+        static void CreatTable( int column, int line, int[,] tableau)
         {
+            int x, i;
             Console.Write("\t╔");
-            for (i = 1; i < colonne; i++)
+            for (i = 1; i < column; i++)
             {
                 Console.Write("═══╦");
             }
             Console.WriteLine("═══╗");
             Console.Write("\t║");
-            for (i = 1; i < colonne; i++)
+            for (i = 1; i < column; i++)
             {
                 Console.Write("   ║");
             }
             Console.WriteLine("   ║");
 
             Console.Write("\t╚");
-            for (i = 1; i < colonne; i++)
+            for (i = 1; i < column; i++)
             {
                 Console.Write("═══╩");
             }
@@ -414,34 +412,34 @@ namespace Puissance4_Rochat_Damien
             Console.WriteLine("");
             Console.Write("\t╔");
 
-            for (i = 1; i < colonne; i++)
+            for (i = 1; i < column; i++)
             {
                 Console.Write("═══╦");
             }
             Console.WriteLine("═══╗");
 
-            for (x = 0; x < ligne - 1; x++)
+            for (x = 0; x < line - 1; x++)
             {
                 Console.Write("\t║   ");
-                for (i = 0; i < colonne; i++)
+                for (i = 0; i < column; i++)
                 {
                     Console.Write("║   ");
                 }
                 Console.Write("\n\t╠═══╬");
-                for (i = 2; i < colonne; i++)
+                for (i = 2; i < column; i++)
                 {
                     Console.Write("═══╬");
                 }
                 Console.WriteLine("═══╣");
             }
             Console.Write("\t║");
-            for (i = 1; i < colonne; i++)
+            for (i = 1; i < column; i++)
             {
                 Console.Write("   ║");
             }
             Console.WriteLine("   ║");
             Console.Write("\t╚");
-            for (i = 1; i < colonne; i++)
+            for (i = 1; i < column; i++)
             {
                 Console.Write("═══╩");
             }
@@ -462,18 +460,18 @@ namespace Puissance4_Rochat_Damien
         /// <summary>
         /// check dans le tableau si il y a 4 nombre les meme l'un a coté des autre
         /// </summary>
-        /// <param name="ligne">ligne entrer par le user</param>
-        /// <param name="colonne">colonne entrer par le user</param>
+        /// <param name="line">line entrer par le user</param>
+        /// <param name="column">colonne entrer par le user</param>
         /// <param name="tableau">c'est le tableau ou on stock la ou il y a les pion des players</param>
         /// <returns></returns>
-        static bool CheckWin(int ligne, int colonne, int[,] tableau)
+        static bool CheckWin(int line, int column, int[,] tableau)
         {
-            // Vérification des lignes (horizontalement)
-            // Parcours des lignes du tableau pour vérifier une séquence de 4 éléments identiques horizontalement.
-            for (int i = 0; i < ligne; i++)
+            // Vérification des lines (horizontalement)
+            // Parcours des lines du tableau pour vérifier une séquence de 4 éléments identiques horizontalement.
+            for (int i = 0; i < line; i++)
             {
                 // Parcours des colonnes, en s'assurant qu'il y a suffisamment de place pour une séquence de 4 éléments
-                for (int j = 0; j < colonne - 3; j++)
+                for (int j = 0; j < column - 3; j++)
                 {
                     // Vérification si les 4 éléments consécutifs sont identiques et non nuls
                     if (tableau[i, j] != 0 && tableau[i, j] == tableau[i, j + 1] && tableau[i, j] == tableau[i, j + 2] && tableau[i, j] == tableau[i, j + 3])
@@ -485,9 +483,9 @@ namespace Puissance4_Rochat_Damien
 
             // Vérification des colonnes (verticalement)
             // Parcours des colonnes du tableau pour vérifier une séquence de 4 éléments identiques verticalement.
-            for (int i = 0; i < ligne - 3; i++)
+            for (int i = 0; i < line - 3; i++)
             {
-                for (int j = 0; j < colonne; j++)
+                for (int j = 0; j < column; j++)
                 {
                     // Vérification si les 4 éléments consécutifs sont identiques et non nuls
                     if (tableau[i, j] != 0 && tableau[i, j] == tableau[i + 1, j] && tableau[i, j] == tableau[i + 2, j] && tableau[i, j] == tableau[i + 3, j])
@@ -499,9 +497,9 @@ namespace Puissance4_Rochat_Damien
 
             // Vérification des diagonales descendantes
             // Parcours des cases pour vérifier une séquence de 4 éléments identiques sur une diagonale descendante
-            for (int i = 0; i < ligne - 3; i++)
+            for (int i = 0; i < line - 3; i++)
             {
-                for (int j = 0; j < colonne - 3; j++)
+                for (int j = 0; j < column - 3; j++)
                 {
                     // Vérification si les 4 éléments consécutifs sur la diagonale sont identiques et non nuls
                     if (tableau[i, j] != 0 && tableau[i, j] == tableau[i + 1, j + 1] && tableau[i, j] == tableau[i + 2, j + 2] && tableau[i, j] == tableau[i + 3, j + 3])
@@ -513,9 +511,9 @@ namespace Puissance4_Rochat_Damien
 
             // Vérification des diagonales montantes
             // Parcours des cases pour vérifier une séquence de 4 éléments identiques sur une diagonale montante
-            for (int i = 3; i < ligne; i++)
+            for (int i = 3; i < line; i++)
             {
-                for (int j = 0; j < colonne - 3; j++)
+                for (int j = 0; j < column - 3; j++)
                 {
                     // Vérification si les 4 éléments consécutifs sur la diagonale sont identiques et non nuls
                     if (tableau[i, j] != 0 && tableau[i, j] == tableau[i - 1, j + 1] && tableau[i, j] == tableau[i - 2, j + 2] && tableau[i, j] == tableau[i - 3, j + 3])
