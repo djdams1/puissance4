@@ -1,255 +1,200 @@
-﻿
-// auteur : Damien Rochat
-// date   : 05.11.2024
-// lieu   : ETML VENNES
-// description : c'est un puissance 4 ou les joueurs peuvent changer le nombre de casses
-
-
+﻿/*ETML
+ *Auteur : Killian Ganne
+ *Date : 05.11.2024
+ *Description : création d'un puissance 4 ou l'on peut choisir la taille du tableau
+ */
 using System;
-using System.Diagnostics;
-using System.Threading; 
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Threading;
 
-namespace Puissance4_Rochat_Damien
+namespace puissance4_KillianGanne
 {
     internal class Program
     {
 
+
         static void Main(string[] args)
         {
+            const int lineMax = 12;
+            const int lineMine = 6;
+            const int ColonMax = 15;
+            const int ColonMine = 7;
+            const int change = 4; // Le nombre de caractères par déplacement
 
-
-
-            // constante pour definire le max de colonne
-            const byte MAX_COLONNE = 16;
-            // constante pour definire le min de colonne
-            const byte MIN_COLONE = 6;
-            // constante pour definire le max de Ligne
-            const byte MAX_LIGNE = 13;
-            // constante pour definire le min de Ligne
-            const byte MIN_LIGNE = 5;
-            // constante pour definire le nombre de casse a changer
-            const int CHANGE = 4;
-
-
-            // Booléin utile pour quitté la premier boucle 
-            bool isok = false;
-            // Booléin utile pour quitté la deuxième boucle 
-            bool isok2 = false;
-            // Booléin utile pour savoir si je suis en game
             bool ingame = true;
 
+            int lineValue;
+            int columnValue;
+            int left = 10;
+            int top = 6;
+            int turne = 2;
+            int player = 1;
 
-            //  Récuperer ce que le joueur écris
+            string line = ""; //demande utilisateur
+            string column = "";//demande utilisateur
             string input = "";
 
 
-            //  sert dans la creation du tableau (== a colonne)
-            int i = 1;
-            //  sert dans la creation du tableau (== a ligne)
-            int x = 1;
-            //  sert a savoir su cest le joueur rouge ou jaune
-            int tour = 2;
-            //  sert a stoqué le nombre de ligne pour la construction
-            int ligne = 0;
-            //  sert a stoqué le nombre de colonne pour la construction
-            int colonne = 0;
-            //  déclaration des varibale de possition pour la metode ShowPlayer et pour déplacer le joueur
-            int left = 10;
-            int top = 7;
-            int joueur = 1;
+            Console.Title = "Puissance4"; //met le titre
 
+             ShowTitle(); //appelle la méthode pour mettre le titre de bienvenue
 
-            //  sert a afficher le message en haut
-            ShowTitle();
-
-
-
-            //  sert a afficher le massage de consigne pour les lignes
-            Console.WriteLine("Merci d'entrer le nombre de lignes");
-            Console.Write("La valeur doit être plus grande que ");
-            Console.ForegroundColor = ConsoleColor.Magenta;
-            Console.Write(MIN_LIGNE);
+            //affiche le texte qui explique le nombre de ligne max et min et combien de ligne 
+            Console.Write("Merci d'entrer le nombre de ligne\nLa valueur doit être plus grande que ");
+            Console.ForegroundColor = ConsoleColor.Red;
+            Console.Write("5 ");
             Console.ResetColor();
-            Console.Write(" est plus petite que ");
-            Console.ForegroundColor = ConsoleColor.Magenta;
-            Console.WriteLine(MAX_LIGNE);
+            Console.Write("est plus petite que ");
+            Console.ForegroundColor = ConsoleColor.Red;
+            Console.WriteLine("13");
             Console.ResetColor();
+            Console.Write("Votre valuer : ");
+
+            line = Console.ReadLine();
 
 
-
-
-            //   chek si le nombre dinner est dans les normes ou pas
-            while (!isok)
+            do
             {
-                Console.Write("Votre Valeur : ");
-                input = Console.ReadLine();
-                // && = et 
-                if (int.TryParse(input, out ligne) && ligne > MIN_LIGNE && ligne < MAX_LIGNE)
+                if (!int.TryParse(line, out lineValue))
                 {
-                    isok = true;
+                    Console.WriteLine("\nCe n'est pas un nombre\n");
+                    Console.Write("Votre valuer : ");
+                    line = Console.ReadLine();
                 }
-                else
+                if (lineValue < lineMine || lineValue > lineMax)
                 {
-                    if (!int.TryParse(input, out ligne))
-                    {
-                        Console.WriteLine("\nEntrez un chiffre valide.");
-                    }
-                    else
-                    {
-                        Console.Write("La valeur doit être plus grande que ");
-                        Console.ForegroundColor = ConsoleColor.Magenta;
-                        Console.Write(MIN_LIGNE);
-                        Console.ResetColor();
-                        Console.Write(" est plus petite que ");
-                        Console.ForegroundColor = ConsoleColor.Magenta;
-                        Console.WriteLine(MAX_LIGNE);
-                        Console.ResetColor();
-                    }
-                    Console.ResetColor();
+                    Console.WriteLine("\nIl ne rentre pas dans les normes\n");
+                    Console.Write("Votre valuer : ");
+                    line = Console.ReadLine();
                 }
             }
-            Console.Clear();
-            //  sert a afficher le message en haut
-            ShowTitle();
-            //  sert a afficher le massage de consigne pour les colonnes
-            Console.WriteLine("Merci d'entrer le nombre de colonne");
-            Console.Write("La valeur doit être plus grande que ");
-            Console.ForegroundColor = ConsoleColor.Magenta;
-            Console.Write(MIN_COLONE);
-            Console.ResetColor();
-            Console.Write(" est plus petite que ");
-            Console.ForegroundColor = ConsoleColor.Magenta;
-            Console.WriteLine(MAX_COLONNE);
-            Console.ResetColor();
+            while (lineValue == 0 || lineValue < lineMine || lineValue > lineMax);
 
-            //   chek si le nombre dinner est dans les normes ou pas
-            while (!isok2)
+
+
+            Console.Write("\nMerci d'entrer le nombre de column\nLa valueur doit être plus grande que ");
+            Console.ForegroundColor = ConsoleColor.Red;
+            Console.Write("6 ");
+            Console.ResetColor();
+            Console.Write("est plus petite que ");
+            Console.ForegroundColor = ConsoleColor.Red;
+            Console.WriteLine("16");
+            Console.ResetColor();
+            Console.Write("Votre valuer : ");
+
+            column = Console.ReadLine();
+
+
+            do
             {
-                Console.Write("Votre Valeur : ");
-                input = Console.ReadLine();
-                if (int.TryParse(input, out colonne) && colonne > MIN_COLONE && colonne < MAX_COLONNE)
+                if (!int.TryParse(column, out columnValue))
                 {
-                    isok2 = true;
+                    Console.WriteLine("\nCe n'est pas un nombre\n");
+                    Console.Write("Votre valuer : ");
+                    column = Console.ReadLine();
                 }
-                else
+                if (columnValue < ColonMine || columnValue > ColonMax)
                 {
-                    if (!int.TryParse(input, out colonne))
-                    {
-                        Console.WriteLine("\nEntrez un chiffre valide.");
-                    }
-                    else
-                    {
-                        Console.WriteLine("Merci d'entrer le nombre de colonne");
-                        Console.Write("La valeur doit être plus grande que ");
-                        Console.ForegroundColor = ConsoleColor.Magenta;
-                        Console.Write(MIN_COLONE);
-                        Console.ResetColor();
-                        Console.Write(" est plus petite que ");
-                        Console.ForegroundColor = ConsoleColor.Magenta;
-                        Console.WriteLine(MAX_COLONNE);
-                        Console.ResetColor();
-                    }
-                    Console.ResetColor();
+                    Console.WriteLine("\nIl ne rentre pas dans les normes\n");
+                    Console.Write("Votre valuer : ");
+                    column = Console.ReadLine();
                 }
-
-
             }
+            while (columnValue == 0 || columnValue < ColonMine || columnValue > ColonMax);
+
+
             Console.Clear();
 
-            int[,] tableau = new int[ligne, colonne];
-
-
-            for (i = 0; i < ligne; i++)
-            {
-                for (int j = 0; j < colonne; j++)
-                {
-                    tableau[i, j] = 0;
-                }
-            }
-;
             ShowTitle();
-            CreatTable(x, i, colonne, ligne, tableau);
-            color(tour);
-            ShowPlayer(left, top);
+
+            ShowTable(columnValue, lineValue);
+
+            ShowRules(columnValue);
+
+            Console.CursorVisible = false;
+
+            // Placer le curseur à la nouvelle position et afficher le bloc
+            Showplayer(left, top);
+
+            int[,] tableau = new int[lineValue, columnValue];
 
 
-
-            Console.SetCursorPosition((6 * colonne) + 5, 7);
-            Console.Write("Mode d'utilisation");
-            Console.SetCursorPosition((6 * colonne) + 5, 8);
-            Console.ForegroundColor = ConsoleColor.Magenta;
-            Console.Write("------------------");
-            Console.ResetColor();
-            Console.SetCursorPosition((6 * colonne) + 5, 9);
-            Console.Write("Déplacement \t Touches directionnelles");
-            Console.SetCursorPosition((6 * colonne) + 5, 10);
-            Console.Write("Tir \t  \t Touches space ou enter");
-            Console.SetCursorPosition((6 * colonne) + 5, 11);
-            Console.Write("Qutter \t Touches Escpae");
-            Console.SetCursorPosition((6 * colonne) + 5, 13);
-            Console.ForegroundColor = ConsoleColor.Magenta;
-            Console.Write("Joueur 1 : █\t");
-            Console.ForegroundColor = ConsoleColor.Yellow;
-            Console.Write(" Joueur 2 : █");
-            Console.ForegroundColor = ConsoleColor.Magenta;
-
+             
 
             while (ingame)
             {
-                if (tour % 2 == 0)
+                // Lire la touche pressée
+                var key = Console.ReadKey(true);
+
+                if (turne % 2 == 0)
                 {
-                    joueur = 1;
+                    player = 1;
                 }
                 else
                 {
-                    joueur = 2;
+                    player = 2;
                 }
 
-                var key = Console.ReadKey(intercept: true);
-                color(tour);
+                Console.ForegroundColor = ConsoleColor.Red;
 
+                Console.ForegroundColor=Color(turne);
+
+                // Effacer le bloc à la position actuelle
                 Console.SetCursorPosition(left, top);
-                Console.Write(" ");
+                Console.Write(" ");  // Effacer le précédent bloc
 
+                // Vérifier si la touche fléchée droite a été pressée
                 if (key.Key == ConsoleKey.RightArrow)
                 {
-                    left += CHANGE;
+                    left += change;  // Déplacement vers la droite
                 }
+                // Vérifier si la touche fléchée gauche a été pressée
                 else if (key.Key == ConsoleKey.LeftArrow)
                 {
-                    left -= CHANGE;
+                    left -= change;  // Déplacement vers la gauche
                 }
                 else if (key.Key == ConsoleKey.Spacebar || key.Key == ConsoleKey.Enter)
                 {
-                    int col = (left - 10) / CHANGE;
 
-                    for (int row = ligne - 1; row >= 0; row--)
+                    int col = (left - 10) / change;
+
+
+                    for (int row = lineValue - 1; row >= 0; row--)
                     {
                         if (tableau[row, col] == 0)
                         {
-                            tableau[row, col] = joueur;
+                            tableau[row, col] = player;
 
-                            int positionTop = 11 + (row * 2);
-                            int positionLeft = 10 + (col * CHANGE);
+
+                            int positionTop = 10 + (row * 2);
+                            int positionLeft = 10 + (col * change);
+
 
                             Console.SetCursorPosition(positionLeft, positionTop);
                             Console.Write('█');
-                            tour++;
-                            color(tour);
-                            ShowPlayer(left, top);
+
+
+
+                            turne++;
+
+
+                            Console.ForegroundColor = Color(turne);
+                            Showplayer(left, top);
+
                             // Vérification des 4 alignéss
                             // Vérification des 4 alignéss
-                            if (CheckWin(ligne, colonne, tableau))
+                            if (VerifierQuatreAlignes(lineValue, columnValue, tableau))
                             {
-                                Console.SetCursorPosition(8, (ligne * 3) + 4);
+                                Console.SetCursorPosition(8, (lineValue * 3) + 2);
                                 Console.ForegroundColor = ConsoleColor.Green;
-                                Console.WriteLine($"Le Joueur {joueur} a gagné !");
+                                Console.WriteLine($"Le Joueur {player} a gagné !");
+
+                                ExitGame(input, lineValue);
+
                                 ingame = false; // Fin de la partie
-                                ExitGame(input, ligne);
                                 break;
                             }
                             break;
@@ -258,80 +203,37 @@ namespace Puissance4_Rochat_Damien
                 }
                 else if (key.Key == ConsoleKey.Escape)
                 {
-                    ExitGame(input, ligne);
+                    ExitGame(input, lineValue);
                 }
 
-                if (left >= colonne * CHANGE + 10)
+                // Si on dépasse la fin de la ligne, revenir au début de la ligne
+                if (left >= columnValue * change + 10)  // Si on dépasse la fin de la ligne
                 {
-                    left = 10;
+                    left = 10;  // Revenir au début de la ligne
                 }
+
                 // Si on dépasse le début de la ligne, revenir à la fin de la ligne
-                if (left < 10)
+                if (left < 10)  // Si on dépasse le début de la ligne (avant la position de départ)
                 {
-                    left = colonne * CHANGE + 10 - CHANGE;
+                    left = columnValue * change + 10 - change;  // Revenir à la fin de la ligne
                 }
-                color(tour);
+
+                Console.ForegroundColor = Color(turne);
                 // Placer le curseur à la nouvelle position et afficher le bloc
-                ShowPlayer(left, top);
+                Showplayer(left, top);
             }
-            Console.Read();
+            
+
         }
         /// <summary>
-        /// modele pour mettre partout
+        /// 
         /// </summary>
-        static void ShowTitle()
-        {
-            Console.Title = "Puissance 4";
-            Console.SetCursorPosition(0, 0);
-            // Les couleurs de dégradé (par exemple, du rouge au violet)
-            ConsoleColor[] gradientColors = new ConsoleColor[] {
-            ConsoleColor.Red, ConsoleColor.DarkRed, ConsoleColor.DarkMagenta,
-            ConsoleColor.Magenta
-        };
-            // Affichage du titre avec un dégradé
-            string[] lines = new string[]
-            {
-        "\t╔══════════════════════════════════════╗",
-        "\t║ Bienvenue dans le jeu du puissance 4 ║",
-        "\t║     Réalisé par Damien Rochat        ║",
-        "\t╚══════════════════════════════════════╝"
-            };
-            int lineIndex = 0;
-            foreach (string line in lines)
-            {
-                Console.SetCursorPosition(0, lineIndex);
-                // Applique un dégradé en fonction de l'index de la ligne
-                for (int i = 0; i < line.Length; i++)
-                {
-                    Console.ForegroundColor = gradientColors[(i * gradientColors.Length) / line.Length];
-                    Console.Write(line[i]);
-                }
-                Console.ResetColor();
-                lineIndex++;
-            }
-            Console.SetCursorPosition(0, 6);
-        }
-        /// <summary>
-        /// Sert a afficher le joueur dans la case
-        /// </summary>
-        /// <param name="left">permet de decaler a gauche le joueur</param>
-        /// <param name="top">permet de decaler vers le bas le joueur</param>
-        static void ShowPlayer(int left, int top)
-        {
-            //écris le █ au cordonée defini par les variable
-            Console.SetCursorPosition(left, top);
-            Console.Write("█");
-            Console.CursorVisible = false;
-        }
-        /// <summary>
-        /// sert a quitter le jeu
-        /// </summary>
-        /// <param name="input">sert a recuperer ce que le user écris</param>
-        /// <param name="ligne">sert a connaitre le nombre de ligne</param>
-        static void ExitGame(string input, int ligne)
+        /// <param name="input"></param>
+        /// <param name="lineValue"></param>
+        static void ExitGame(string input, int lineValue)
         {
             // écris un petit message pour recommencer
-            Console.SetCursorPosition(8, (ligne * 3) + 5);
+            Console.SetCursorPosition(8, (lineValue * 3) + 5);
             Console.CursorVisible = false;
             Console.ForegroundColor = ConsoleColor.White;
             Console.Write("Voulez-vous recommencer ");
@@ -343,13 +245,14 @@ namespace Puissance4_Rochat_Damien
             {
                 // relance le programme au main
                 Console.Clear();
+                Console.ResetColor();
                 Main(null);
             }
             // regarde si on mets un N
             else if (input == "n" || input == "N")
             {
                 // écris un petit message pour quitter
-                Console.SetCursorPosition(8, (ligne * 3) + 6);
+                Console.SetCursorPosition(8, (lineValue * 3) + 6);
                 Console.ForegroundColor = ConsoleColor.White;
                 Console.Write("Voulez-vous quitté ");
                 Console.ForegroundColor = ConsoleColor.Red;
@@ -365,109 +268,167 @@ namespace Puissance4_Rochat_Damien
                 else
                 {
                     //clear les 2 ligne ou il peux y avoir du texte
-                    Console.SetCursorPosition(8, (ligne * 3) + 5);
+                    Console.SetCursorPosition(8, (lineValue * 3) + 5);
                     Console.Write("                                    ");
-                    Console.SetCursorPosition(8, (ligne * 3) + 6);
+                    Console.SetCursorPosition(8, (lineValue * 3) + 6);
                     Console.Write("                                    ");
                 }
             }
         }
+        
+
         /// <summary>
-        /// Permete de créé la table
+        /// définie la couleur selon le joueur
         /// </summary>
-        /// <param name="x">nombre d'iteration pour les lignes</param>
-        /// <param name="i">nombre d'iteration pour les colonnes</param>
-        /// <param name="colonne">nombre de colonne</param>
-        /// <param name="ligne">nombre de ligne</param>
-        static void CreatTable(int x, int i, int colonne, int ligne, int[,] tableau)
+        /// <param name="turne">le nombre de tour du jeu</param>
+        /// <returns></returns>
+        static ConsoleColor Color(int turne)
         {
-            Console.Write("\t╔");
-            for (i = 1; i < colonne; i++)
+            ConsoleColor colorBase = ConsoleColor.White;
+
+            colorBase = (turne % 2 == 0) ? ConsoleColor.Red : ConsoleColor.Yellow;
+
+            return colorBase;
+        }
+
+
+        /// <summary>
+        /// affiche le titre
+        /// </summary>
+        static void ShowTitle()
+        {
+            Console.WriteLine("\t╔══════════════════════════════════════════════════════╗");
+            Console.WriteLine("\t║          Bienvenue dans le jeu Puissance 4           ║");
+            Console.WriteLine("\t║              Réalisé par Killian Ganne               ║");
+            Console.WriteLine("\t║                     04.11.2024                       ║");
+            Console.WriteLine("\t╚══════════════════════════════════════════════════════╝\n");
+        }
+
+
+        /// <summary>
+        /// affiche le joueur
+        /// </summary>
+        /// <param name="left">position à gauche</param>
+        /// <param name="top">position en haut</param>
+        static void Showplayer(int left, int top)
+        {
+            Console.SetCursorPosition(left, top);
+            Console.Write("█");
+        }
+
+        /// <summary>
+        /// affiche le tableau
+        /// </summary>
+        /// <param name="columnValue">le nombre de colonne</param>
+        /// <param name="lineValue">le nombre de ligne</param>
+        static void ShowTable(int columnValue, int lineValue)
+        {
+            int i = 0;
+            int x = 0;
+
+            Console.Write("\t╔═══╦");
+            for (i = 2; i < columnValue; i++)
             {
                 Console.Write("═══╦");
             }
             Console.WriteLine("═══╗");
-            Console.Write("\t║");
-            for (i = 1; i < colonne; i++)
-            {
-                Console.Write("   ║");
-            }
-            Console.WriteLine("   ║");
 
-            Console.Write("\t╚");
-            for (i = 1; i < colonne; i++)
+
+            Console.Write("\t║   ");
+            for (i = 0; i < columnValue; i++)
+            {
+                Console.Write("║   ");
+            }
+
+            Console.Write("\n\t╚═══╩");
+            for (i = 2; i < columnValue; i++)
             {
                 Console.Write("═══╩");
             }
-            Console.WriteLine("═══╝");
+            Console.WriteLine("═══╝\n");
 
 
-            Console.WriteLine("");
-            Console.Write("\t╔");
 
-            for (i = 1; i < colonne; i++)
+            Console.Write("\t╔═══╦");
+            for (i = 2; i < columnValue; i++)
             {
                 Console.Write("═══╦");
             }
             Console.WriteLine("═══╗");
 
-            for (x = 0; x < ligne - 1; x++)
+
+            for (x = 1; x < lineValue; x++)
             {
+
                 Console.Write("\t║   ");
-                for (i = 0; i < colonne; i++)
+                for (i = 0; i < columnValue; i++)
                 {
                     Console.Write("║   ");
                 }
+
                 Console.Write("\n\t╠═══╬");
-                for (i = 2; i < colonne; i++)
+                for (i = 2; i < columnValue; i++)
                 {
                     Console.Write("═══╬");
                 }
                 Console.WriteLine("═══╣");
             }
-            Console.Write("\t║");
-            for (i = 1; i < colonne; i++)
+
+            Console.Write("\t║   ");
+            for (i = 0; i < columnValue; i++)
             {
-                Console.Write("   ║");
+                Console.Write("║   ");
             }
-            Console.WriteLine("   ║");
-            Console.Write("\t╚");
-            for (i = 1; i < colonne; i++)
+
+
+            Console.Write("\n\t╚═══╩");
+            for (i = 2; i < columnValue; i++)
             {
                 Console.Write("═══╩");
             }
             Console.WriteLine("═══╝");
         }
+
         /// <summary>
-        /// sert a changer la couleur en fonction du joueur
+        /// affiche le paragraphe de règle à côté du tableau
         /// </summary>
-        /// <param name="tour">sert a savoir si cest le tour 1 ou 2</param>
-        static void color(int tour)
+        /// <param name="columnValue">le nombre de colonne</param>
+        static void ShowRules(int columnValue)
         {
-            if (tour % 2 == 0)
-            {
-                Console.ForegroundColor = ConsoleColor.Magenta;
 
-            }
-            else
-            {
-                Console.ForegroundColor = ConsoleColor.Yellow;
-
-            }
+            Console.SetCursorPosition((6 * columnValue) + 5, 7);
+            Console.Write("Mode d'utilisation");
+            Console.SetCursorPosition((6 * columnValue) + 5, 8);
+            Console.ForegroundColor = ConsoleColor.Red;
+            Console.Write("------------------");
+            Console.ResetColor();
+            Console.SetCursorPosition((6 * columnValue) + 5, 9);
+            Console.Write("Déplacement \t Touches directionnelles");
+            Console.SetCursorPosition((6 * columnValue) + 5, 10);
+            Console.Write("Tir \t  \t Touches space ou enter");
+            Console.SetCursorPosition((6 * columnValue) + 5, 11);
+            Console.Write("Qutter \t Touches Escpae");
+            Console.SetCursorPosition((6 * columnValue) + 5, 13);
+            Console.ForegroundColor = ConsoleColor.Red;
+            Console.Write("Joueur 1 : █\t");
+            Console.ForegroundColor = ConsoleColor.Yellow;
+            Console.Write(" Joueur 2 : █");
+            Console.ForegroundColor = ConsoleColor.Red;
         }
+
         /// <summary>
-        /// check dans le tableau si il y a 4 nombre les meme l'un a coté des autre
+        /// vérifie si un joueur gagne
         /// </summary>
-        /// <param name="ligne">ligne entrer par le user</param>
-        /// <param name="colonne">colonne entrer par le user</param>
-        /// <param name="tableau">c'est le tableau ou on stock la ou il y a les pion des joueurs</param>
+        /// <param name="lineValue">nombre de ligne</param>
+        /// <param name="columnValue">nombre de colonne</param>
+        /// <param name="tableau">le tableau à deux dimmension </param>
         /// <returns></returns>
-        static bool CheckWin(int ligne, int colonne, int[,] tableau)
+        static bool VerifierQuatreAlignes(int lineValue, int columnValue, int[,] tableau)
         {
             // Vérification des lignes (horizontalement)
-            for (int i = 0; i < ligne; i++)
+            for (int i = 0; i < lineValue; i++)
             {
-                for (int j = 0; j < colonne - 3; j++)
+                for (int j = 0; j < columnValue - 3; j++)
                 {
                     if (tableau[i, j] != 0 && tableau[i, j] == tableau[i, j + 1] && tableau[i, j] == tableau[i, j + 2] && tableau[i, j] == tableau[i, j + 3])
                     {
@@ -477,9 +438,9 @@ namespace Puissance4_Rochat_Damien
             }
 
             // Vérification des colonnes (verticalement)
-            for (int i = 0; i < ligne - 3; i++)
+            for (int i = 0; i < lineValue - 3; i++)
             {
-                for (int j = 0; j < colonne; j++)
+                for (int j = 0; j < columnValue; j++)
                 {
                     if (tableau[i, j] != 0 && tableau[i, j] == tableau[i + 1, j] && tableau[i, j] == tableau[i + 2, j] && tableau[i, j] == tableau[i + 3, j])
                     {
@@ -489,9 +450,9 @@ namespace Puissance4_Rochat_Damien
             }
 
             // Vérification des diagonales descendantes
-            for (int i = 0; i < ligne - 3; i++)
+            for (int i = 0; i < lineValue - 3; i++)
             {
-                for (int j = 0; j < colonne - 3; j++)
+                for (int j = 0; j < columnValue - 3; j++)
                 {
                     if (tableau[i, j] != 0 && tableau[i, j] == tableau[i + 1, j + 1] && tableau[i, j] == tableau[i + 2, j + 2] && tableau[i, j] == tableau[i + 3, j + 3])
                     {
@@ -501,9 +462,9 @@ namespace Puissance4_Rochat_Damien
             }
 
             // Vérification des diagonales montantes
-            for (int i = 3; i < ligne; i++)
+            for (int i = 3; i < lineValue; i++)
             {
-                for (int j = 0; j < colonne - 3; j++)
+                for (int j = 0; j < columnValue - 3; j++)
                 {
                     if (tableau[i, j] != 0 && tableau[i, j] == tableau[i - 1, j + 1] && tableau[i, j] == tableau[i - 2, j + 2] && tableau[i, j] == tableau[i - 3, j + 3])
                     {
@@ -514,6 +475,5 @@ namespace Puissance4_Rochat_Damien
 
             return false;
         }
-
     }
 }
